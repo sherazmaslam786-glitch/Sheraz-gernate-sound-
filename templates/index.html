@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiraz Luxury Sound AI</title>
+    <title>Shiraz Luxury Sound AI - شاہانہ صوتی سٹوڈیو</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e1b4b);
-            color: #f8fafc;
+            background: linear-gradient(135deg, #090d16, #1a1836);
+            color: #f1f5f9;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -18,19 +17,27 @@
             min-height: 100vh;
         }
         .container {
-            background: rgba(30, 41, 59, 0.85);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.9);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             width: 100%;
-            max-width: 450px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.3); /* رائل گولڈ بارڈر */
         }
         h1 {
             text-align: center;
-            color: #38bdf8;
-            font-size: 24px;
+            color: #d4af37; /* گولڈن کلر */
+            font-size: 26px;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
             margin-bottom: 25px;
         }
         .form-group {
@@ -40,32 +47,38 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #cbd5e1;
+            color: #e2e8f0;
         }
         input, textarea, select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #475569;
-            background: #0f172a;
+            padding: 14px;
+            border: 1px solid #334155;
+            background: #020617;
             color: #fff;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #d4af37;
         }
         button {
             width: 100%;
-            padding: 12px;
-            background: #0284c7;
-            color: white;
+            padding: 14px;
+            background: linear-gradient(135deg, #b8860b, #d4af37);
+            color: #000;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.2s, opacity 0.3s;
         }
         button:hover {
-            background: #0369a1;
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
         .hidden {
             display: none;
@@ -74,55 +87,76 @@
             margin-top: 15px;
             text-align: center;
             font-weight: 500;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
         }
-        .success { background: rgba(22, 101, 52, 0.4); color: #4ade80; }
-        .error { background: rgba(153, 27, 27, 0.4); color: #f87171; }
+        .success { background: rgba(20, 83, 45, 0.5); color: #4ade80; border: 1px solid #166534; }
+        .error { background: rgba(127, 29, 29, 0.5); color: #f87171; border: 1px solid #991b1b; }
+        
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .download-btn:hover {
+            background: #15803d;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Shiraz Luxury Sound AI</h1>
+    <div class="subtitle">جہاں الفاظ روح کو چھو لیں اور ترنّم دنگ کر دے</div>
 
     <!-- سٹیپ 1: فون نمبر ان پٹ -->
     <div id="step-phone" class="form-group">
-        <label for="phone">فون نمبر درج کریں:</label>
+        <label for="phone">اپنا موبائل نمبر درج کریں:</label>
         <input type="text" id="phone" placeholder="مثلاً: 03001234567">
-        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی (OTP) بھیجیں</button>
+        <button onclick="sendOtp()" style="margin-top: 15px;">او ٹی پی (OTP) حاصل کریں</button>
     </div>
 
     <!-- سٹیپ 2: او ٹی پی وریفیکیشن -->
     <div id="step-otp" class="form-group hidden">
-        <label for="otp">تصدیقی کوڈ (OTP) درج کریں:</label>
-        <input type="text" id="otp" placeholder="کوڈ درج کریں">
-        <button onclick="verifyOtp()" style="margin-top: 12px;">تصدیق کریں</button>
+        <label for="otp">موصول ہونے والا تصدیقی کوڈ (OTP):</label>
+        <input type="text" id="otp" placeholder="کوڈ یہاں درج کریں">
+        <button onclick="verifyOtp()" style="margin-top: 15px;">تصدیق کر کے اندر جائیں</button>
     </div>
 
-    <!-- سٹیپ 3: گانا جنریشن پینل -->
+    <!-- سٹیپ 3: دل دہلا دینے والا سٹوڈیو -->
     <div id="step-studio" class="hidden">
         <div class="form-group">
-            <label for="lyrics">اپنے دل کے جذبات یا شاعری لکھیں:</label>
-            <textarea id="lyrics" rows="4" placeholder="یہاں گانے کے بول لکھیں..."></textarea>
+            <label for="lyrics">اپنے دل کے جذبات اور شاعری کے بول لکھیں:</label>
+            <textarea id="lyrics" rows="5" placeholder="وہ جو ہجرت کی شب ہمیں روتا چھوڑ گیا..."></textarea>
         </div>
         <div class="form-group">
-            <label for="mood">موڈ (Mood):</label>
+            <label for="mood">ترنّم اور روح پرور انداز (Mood):</label>
             <select id="mood">
-                <option value="Sad">سیڈ (Sad)</option>
-                <option value="Romantic">رومانٹک (Romantic)</option>
-                <option value="Energetic">انرجیٹک (Energetic)</option>
-                <option value="Sufi">صوفیانہ (Sufi)</option>
+                <option value="Sufi">صوفیانہ سوز و ساز (Sufi Mystic)</option>
+                <option value="Sad">دل دہلا دینے والا درد (Deep Sad)</option>
+                <option value="Ghazal">کلاسیکی غزل (Classical Ghazal)</option>
+                <option value="Romantic">روح پرور رومانوی (Soulful Romantic)</option>
             </select>
         </div>
-        <button onclick="generateMusic()">اے آئی گانا بنائیں</button>
+        <button onclick="generateMusic()">شاہانہ اے آئی گانا جنریٹ کریں</button>
     </div>
 
     <div id="message"></div>
 
     <div id="audio-result" style="margin-top: 20px; text-align: center;" class="hidden">
-        <p style="color: #4ade80; font-weight: bold;">آپ کا گانا تیار ہے!</p>
-        <audio id="audio-player" controls style="width: 100%; margin-top: 10px;"></audio>
+        <p style="color: #4ade80; font-weight: bold; font-size: 16px;">آپ کا شاہانہ گانا تیار ہو چکا ہے!</p>
+        <audio id="audio-player" controls style="width: 100%; margin-top: 10px; border-radius: 8px;"></audio>
+        <!-- آسان اور ون-کلک ڈاؤن لوڈ بٹن -->
+        <a id="download-link" href="#" class="download-btn" download="Shiraz_Luxury_Song.mp3">گانا ڈائریکٹ ڈاؤن لوڈ کریں (Download)</a>
     </div>
 </div>
 
@@ -138,7 +172,7 @@
     async function sendOtp() {
         userPhone = document.getElementById('phone').value.trim();
         if (!userPhone) {
-            showMessage("براہ کرم فون نمبر لکھیں!", "error");
+            showMessage("براہ کرم درست فون نمبر لکھیں!", "error");
             return;
         }
 
@@ -158,14 +192,14 @@
                 showMessage(data.message, "error");
             }
         } catch (err) {
-            showMessage("سرور سے رابطہ نہیں ہو سکا!", "error");
+            showMessage("سرور سے رابطہ قائم نہیں ہو سکا!", "error");
         }
     }
 
     async function verifyOtp() {
         let otpCode = document.getElementById('otp').value.trim();
         if (!otpCode) {
-            showMessage("تصدیقی کوڈ درج کریں!", "error");
+            showMessage("تصدیقی کوڈ درج کرنا لازمی ہے!", "error");
             return;
         }
 
@@ -185,7 +219,7 @@
                 showMessage(data.message, "error");
             }
         } catch (err) {
-            showMessage("تصدیق میں خرابی پیش آگئی!", "error");
+            showMessage("تصدیق کے عمل میں خرابی پیش آگئی!", "error");
         }
     }
 
@@ -194,11 +228,11 @@
         let mood = document.getElementById('mood').value;
 
         if (!lyrics) {
-            showMessage("براہ کرم کچھ الفاظ یا لیرکس لکھیں!", "error");
+            showMessage("براہ کرم کچھ دلکش شعر یا لیرکس درج کریں!", "error");
             return;
         }
 
-        showMessage("اے آئی گانا تیار کر رہا ہے، براہ کرم انتظار کریں...", "success");
+        showMessage("اے آئی شاہانہ صوتی ترنّم تیار کر رہا ہے، ذرا انتظار کیجیے...", "success");
 
         try {
             let res = await fetch('/generate-music', {
@@ -217,11 +251,12 @@
                 showMessage(data.message, "success");
                 document.getElementById('audio-result').classList.remove('hidden');
                 document.getElementById('audio-player').src = data.audio_url;
+                document.getElementById('download-link').href = data.audio_url;
             } else {
                 showMessage(data.message, "error");
             }
         } catch (err) {
-            showMessage("گانا بناتے وقت سسٹم میں خرابی ہوگئی!", "error");
+            showMessage("گانا بناتے وقت سسٹم میں تکنیکی خرابی ہوگئی!", "error");
         }
     }
 </script>
