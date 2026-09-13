@@ -1,14 +1,230 @@
-import os
-from flask import Flask, render_template
 
-app = Flask(__name__)
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiraz Luxury Sound AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(30, 41, 59, 0.85);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0369a1;
+        }
+        .hidden {
+            display: none;
+        }
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .success { background: rgba(22, 101, 52, 0.4); color: #4ade80; }
+        .error { background: rgba(153, 27, 27, 0.4); color: #f87171; }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h1>Shiraz Luxury Sound AI</h1>
 
-@app.route("/")
-def home():
-  return render_template("index.html")
+    <!-- سٹیپ 1: فون نمبر ان پٹ -->
+    <div id="step-phone" class="form-group">
+        <label for="phone">فون نمبر درج کریں:</label>
+        <input type="text" id="phone" placeholder="مثلاً: 03001234567">
+        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی (OTP) بھیجیں</button>
+    </div>
 
+    <!-- سٹیپ 2: او ٹی پی وریفیکیشن -->
+    <div id="step-otp" class="form-group hidden">
+        <label for="otp">تصدیقی کوڈ (OTP) درج کریں:</label>
+        <input type="text" id="otp" placeholder="کوڈ درج کریں">
+        <button onclick="verifyOtp()" style="margin-top: 12px;">تصدیق کریں</button>
+    </div>
 
-if __name__ == "__main__":
-  port = int(os.environ.get("PORT", 5000))
-  app.run(host="0.0.0.0", port=port)
+    <!-- سٹیپ 3: گانا جنریشن پینل -->
+    <div id="step-studio" class="hidden">
+        <div class="form-group">
+            <label for="lyrics">اپنے دل کے جذبات یا شاعری لکھیں:</label>
+            <textarea id="lyrics" rows="4" placeholder="یہاں گانے کے بول لکھیں..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="mood">موڈ (Mood):</label>
+            <select id="mood">
+                <option value="Sad">سیڈ (Sad)</option>
+                <option value="Romantic">رومانٹک (Romantic)</option>
+                <option value="Energetic">انرجیٹک (Energetic)</option>
+                <option value="Sufi">صوفیانہ (Sufi)</option>
+            </select>
+        </div>
+        <button onclick="generateMusic()">اے آئی گانا بنائیں</button>
+    </div>
+
+    <div id="message"></div>
+
+    <div id="audio-result" style="margin-top: 20px; text-align: center;" class="hidden">
+        <p style="color: #4ade80; font-weight: bold;">آپ کا گانا تیار ہے!</p>
+        <audio id="audio-player" controls style="width: 100%; margin-top: 10px;"></audio>
+    </div>
+</div>
+
+<script>
+    let userPhone = "";
+
+    function showMessage(text, type) {
+        const msg = document.getElementById('message');
+        msg.innerText = text;
+        msg.className = type;
+    }
+
+    async function sendOtp() {
+        userPhone = document.getElementById('phone').value.trim();
+        if (!userPhone) {
+            showMessage("براہ کرم فون نمبر لکھیں!", "error");
+            return;
+        }
+
+        try {
+            let res = await fetch('/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: userPhone })
+            });
+            let data = await res.json();
+
+            if (res.ok) {
+                showMessage(data.message, "success");
+                document.getElementById('step-phone').classList.add('hidden');
+                document.getElementById('step-otp').classList.remove('hidden');
+            } else {
+                showMessage(data.message, "error");
+            }
+        } catch (err) {
+            showMessage("سرور سے رابطہ نہیں ہو سکا!", "error");
+        }
+    }
+
+    async function verifyOtp() {
+        let otpCode = document.getElementById('otp').value.trim();
+        if (!otpCode) {
+            showMessage("تصدیقی کوڈ درج کریں!", "error");
+            return;
+        }
+
+        try {
+            let res = await fetch('/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: userPhone, otp: otpCode })
+            });
+            let data = await res.json();
+
+            if (res.ok) {
+                showMessage(data.message, "success");
+                document.getElementById('step-otp').classList.add('hidden');
+                document.getElementById('step-studio').classList.remove('hidden');
+            } else {
+                showMessage(data.message, "error");
+            }
+        } catch (err) {
+            showMessage("تصدیق میں خرابی پیش آگئی!", "error");
+        }
+    }
+
+    async function generateMusic() {
+        let lyrics = document.getElementById('lyrics').value.trim();
+        let mood = document.getElementById('mood').value;
+
+        if (!lyrics) {
+            showMessage("براہ کرم کچھ الفاظ یا لیرکس لکھیں!", "error");
+            return;
+        }
+
+        showMessage("اے آئی گانا تیار کر رہا ہے، براہ کرم انتظار کریں...", "success");
+
+        try {
+            let res = await fetch('/generate-music', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: userPhone, lyrics: lyrics, mood: mood })
+            });
+            let data = await res.json();
+
+            if (res.status === 403) {
+                showMessage(data.message, "error");
+                return;
+            }
+
+            if (res.ok) {
+                showMessage(data.message, "success");
+                document.getElementById('audio-result').classList.remove('hidden');
+                document.getElementById('audio-player').src = data.audio_url;
+            } else {
+                showMessage(data.message, "error");
+            }
+        } catch (err) {
+            showMessage("گانا بناتے وقت سسٹم میں خرابی ہوگئی!", "error");
+        }
+    }
+</script>
+
+</body>
+</html>
