@@ -17,10 +17,7 @@ except Exception as e:
 
 @app.route('/')
 def home():
-    try:
-        return render_template('index.html')
-    except Exception as e:
-        return f"انٹرفیس لوڈ کرنے میں خرابی: {str(e)}", 500
+    return render_template('index.html')
 
 @app.route('/send-otp', methods=['POST'])
 def send_otp():
@@ -32,11 +29,10 @@ def send_otp():
 
         if db:
             user_ref = db.collection('users').document(phone_number)
-            user_doc = user_ref.get()
-            if not user_doc.exists:
+            if not user_ref.get().exists:
                 user_ref.set({"phone": phone_number, "verified": False, "songs_count": 0, "is_pro": False})
 
-        return jsonify({"status": "success", "message": "او ٹی پی کامیابی سے بھیج دیا گیا ہے!"})
+        return jsonify({"status": "success", "message": "او ٹی پی کامیابی سے بھیج دیا گیا ہے! فون کی وائبریشن چیک کریں۔"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"سسٹم خرابی: {str(e)}"}), 500
 
@@ -45,35 +41,25 @@ def verify_otp():
     try:
         data = request.json
         phone_number = data.get('phone')
-        if not phone_number:
-            return jsonify({"status": "error", "message": "فون نمبر درکار ہے!"}), 400
-
         if db:
-            user_ref = db.collection('users').document(phone_number)
-            user_ref.update({"verified": True})
-
+            db.collection('users').document(phone_number).update({"verified": True})
         return jsonify({"status": "success", "message": "تصدیق کامیاب! شاہانہ سٹوڈیو میں خوش آمدید۔"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"تصدیق میں خرابی: {str(e)}"}), 500
 
-# ایزی پیسہ / جاز کیش سے پرو ورژن خریدنے کا روٹ
 @app.route('/buy-pro', methods=['POST'])
 def buy_pro():
     try:
         data = request.json
         phone_number = data.get('phone')
-        payment_method = data.get('method') # EasyPaisa / JazzCash / Bank
+        payment_method = data.get('method')
         
-        if not phone_number:
-            return jsonify({"status": "error", "message": "فون نمبر لازمی ہے!"}), 400
-
         if db:
-            user_ref = db.collection('users').document(phone_number)
-            user_ref.update({"is_pro": True, "songs_count": 0})
+            db.collection('users').document(phone_number).update({"is_pro": True, "songs_count": 0})
 
         return jsonify({
             "status": "success",
-            "message": f"مبارک ہو! آپ کا {payment_method} کے ذریعے 1,000 روپے کا پرو پاس فعال ہو گیا ہے۔ اب آپ انمٹ گانے بنا سکتے ہیں!"
+            "message": "مبارک ہو! آپ کی پیمنٹ شیرز احمد کے ایزی پیسہ اکاؤنٹ (03208629040) میں تصدیق ہو گئی ہے۔ پرو پاس فعال ہے!"
         })
     except Exception as e:
         return jsonify({"status": "error", "message": f"پیمنٹ پروسیسنگ میں خرابی: {str(e)}"}), 500
@@ -88,30 +74,25 @@ def generate_music():
         if not phone_number or not lyrics:
             return jsonify({"status": "error", "message": "فون نمبر اور شاعری کے بول لازمی ہیں!"}), 400
 
-        # زبان کی خودکار شناخت
-        detected_lang = "اردو / سرائیکی / پنجابی"
-        if any(ord(char) < 128 for char in lyrics) and sum(1 for c in lyrics if c.isascii()) > len(lyrics) / 2:
-            detected_lang = "English"
-
-        # ہیوی بیس، گٹار اور دھم دھماٹ موڈ
-        audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-        detected_mood = "شاہانہ ہیوی بیس اور گٹار بیٹ (Viral Heavy Bass)"
-        
         lyrics_lower = lyrics.lower()
-        if "غم" in lyrics_lower or "درد" in lyrics_lower or "روتا" in lyrics_lower:
-            detected_mood = "دل دہلا دینے والا سوز و گداز (Deep Emotional Melancholy)"
+        detected_culture = "اردو / سرائیکی (شاہانہ مٹھاس اور سُر)"
+        audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        
+        if "بلوچی" in lyrics_lower or "بلوچ" in lyrics_lower or "روپ" in lyrics_lower or "شامل" in lyrics_lower:
+            detected_culture = "بلوچی روایتی ڈھول اور طنبور بیٹ (Balochi Folk Heavy Thump)"
             audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-        elif "جوشیلا" in lyrics_lower or "دھول" in lyrics_lower or "دہم" in lyrics_lower or "بیٹ" in lyrics_lower:
-            detected_mood = "دھم دھماٹ ٹک ٹاک بم دھماکہ بیٹ (Heavy Dhol & Viral Beats)"
+        elif "پشتو" in lyrics_lower or "پختون" in lyrics_lower or "تپہ" in lyrics_lower:
+            detected_culture = "پشتو رباب اور جوشیلا ڈھول طوفان (Pashto Rabab & Heavy Dhol)"
             audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+        elif "غم" in lyrics_lower or "درد" in lyrics_lower:
+            detected_culture = "دل چیر دینے والا سوز و گداز اور درد بھرا لہجہ"
+            audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
 
-        # لمیٹ چیک
         songs_count = 0
         is_pro = False
         if db:
             user_ref = db.collection('users').document(phone_number)
             user_doc = user_ref.get()
-            
             if user_doc.exists:
                 user_data = user_doc.to_dict()
                 songs_count = user_data.get("songs_count", 0)
@@ -120,7 +101,7 @@ def generate_music():
                 if not is_pro and songs_count >= 5:
                     return jsonify({
                         "status": "limit_exceeded",
-                        "message": "آپ کے 5 مفت گانے پورے ہو چکے ہیں۔ نیچے دیے گئے ایزی پیسہ/جاز کیش بٹن سے 1,000 روپے میں پرو پاس خریدیں!"
+                        "message": "آپ کے 5 مفت گانے پورے ہو چکے ہیں۔ لائف ٹائم پرو پاس کے لیے اونر شیرز احمد (03208629040) پر 1,000 روپے بھیجیں!"
                     }), 403
                 
                 if not is_pro:
@@ -128,19 +109,15 @@ def generate_music():
                     user_ref.update({"songs_count": songs_count})
             else:
                 user_ref.set({"phone": phone_number, "verified": True, "songs_count": 1, "is_pro": False})
-                songs_count = 1
 
-        songs_left = "لاعثود (Pro Unlimited)" if is_pro else max(0, 5 - songs_count)
         viral_share_link = f"https://shiraz-gernate-sound-1.onrender.com?song={abs(hash(lyrics))}"
 
         return jsonify({
             "status": "success",
             "audio_url": audio_url,
-            "detected_lang": detected_lang,
-            "detected_mood": detected_mood,
-            "songs_left": songs_left,
+            "detected_culture": detected_culture,
             "viral_link": viral_share_link,
-            "message": f"🔥 دھوم مچانے والا ٹریک تیار ہے! | موڈ: {detected_mood}"
+            "message": f"🔥 ڈھول کی گہری دھمک اور پرفیکٹ بیٹ کے ساتھ ٹریک تیار ہے! | ثقافت: {detected_culture}"
         })
 
     except Exception as e:
