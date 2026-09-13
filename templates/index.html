@@ -17,131 +17,61 @@
             min-height: 100vh;
         }
         .container {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.98);
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
             width: 100%;
             max-width: 500px;
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(212, 175, 55, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.7);
         }
-        h1 {
-            text-align: center;
-            color: #d4af37;
-            font-size: 25px;
-            margin-bottom: 5px;
-            font-weight: 900;
-        }
-        .subtitle {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #e2e8f0;
-            font-size: 14px;
-        }
+        h1 { text-align: center; color: #d4af37; font-size: 26px; font-weight: 900; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #e2e8f0; font-size: 14px; }
         input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #475569;
-            background: #020617;
-            color: #fff;
-            border-radius: 10px;
-            font-size: 15px;
-            box-sizing: border-box;
-            outline: none;
+            width: 100%; padding: 12px; border: 1px solid #475569;
+            background: #020617; color: #fff; border-radius: 10px; font-size: 15px; box-sizing: border-box; outline: none;
         }
         button {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #b8860b, #d4af37);
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
+            width: 100%; padding: 13px; background: linear-gradient(135deg, #b8860b, #d4af37);
+            color: #000; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;
         }
-        button:hover { transform: translateY(-2px); }
+        button:hover { opacity: 0.9; }
         .hidden { display: none; }
-        
-        #message {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: 500;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-        .success { background: rgba(20, 83, 45, 0.6); color: #4ade80; border: 1px solid #166534; }
-        .error { background: rgba(127, 29, 29, 0.6); color: #f87171; border: 1px solid #991b1b; }
+        #message { margin-top: 15px; text-align: center; font-weight: 500; padding: 12px; border-radius: 8px; font-size: 13px; }
+        .success { background: rgba(20, 83, 45, 0.7); color: #4ade80; border: 1px solid #166534; }
+        .error { background: rgba(127, 29, 29, 0.7); color: #f87171; border: 1px solid #991b1b; }
 
-        /* پیمنٹ باکس اور وائرل شیئر سٹائل */
         .payment-box {
-            background: rgba(30, 41, 59, 0.95);
-            border: 2px dashed #d4af37;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-            text-align: center;
+            background: rgba(30, 41, 59, 0.98); border: 2px dashed #d4af37;
+            padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;
         }
-        .pay-btn-ep { background: #00a651; color: white; margin-top: 10px; }
-        .pay-btn-jc { background: #ed1c24; color: white; margin-top: 10px; }
-        .pay-btn-bank { background: #003366; color: white; margin-top: 10px; }
-
+        .owner-account-info {
+            background: #020617; color: #d4af37; padding: 12px; border-radius: 8px;
+            font-size: 15px; font-weight: bold; margin: 12px 0; border: 1px solid #b8860b;
+        }
         .viral-box {
-            background: #020617;
-            border: 1px solid #38bdf8;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            word-break: break-all;
-            font-size: 12px;
-            color: #38bdf8;
+            background: #020617; border: 1px solid #38bdf8; padding: 12px;
+            border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 12px; color: #38bdf8;
         }
         .download-btn {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 12px;
-            background: #16a34a;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
+            display: inline-block; margin-top: 12px; padding: 12px; background: #16a34a;
+            color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; width: 100%; box-sizing: border-box;
         }
-
-        @keyframes heavy-vibe {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        .shaking { animation: heavy-vibe 0.5s infinite; }
     </style>
 </head>
 <body>
 
 <div class="container" id="app-container">
     <h1>Shiraz Luxury Sound AI</h1>
-    <div class="subtitle">ٹک ٹاک اور یوٹیوب پر دھوم مچانے والا وائرل صوتی سٹوڈیو</div>
+    <div class="subtitle">اونر شیرز احمد کا آفیشل وائرل میوزک اور ڈھول سٹوڈیو</div>
 
     <!-- سٹیپ 1 -->
     <div id="step-phone" class="form-group">
         <label>موبائل نمبر درج کریں:</label>
         <input type="text" id="phone" placeholder="03001234567">
-        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی حاصل کریں</button>
+        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی (OTP) حاصل کریں</button>
     </div>
 
     <!-- سٹیپ 2 -->
@@ -154,28 +84,32 @@
     <!-- سٹیپ 3: سٹوڈیو -->
     <div id="step-studio" class="hidden">
         <div class="form-group">
-            <label>شاعری یا الفاظ (لکھیں 'جوشیلا دھول بیٹ' یا 'غم'):</label>
-            <textarea id="lyrics" rows="4" placeholder="اپنے دل کے بول یہاں لکھیں..."></textarea>
+            <label>شاعری لکھیں (مثلاً: بلوچی ڈھول بیٹ، پشتو رباب یا درد):</label>
+            <textarea id="lyrics" rows="4" placeholder="یہاں اپنے بول لکھیں..."></textarea>
         </div>
-        <button onclick="generateMusic()">🔥 ہیوی بیس گانا جنریٹ کریں</button>
+        <button onclick="generateMusic()">🔥 گہری دھمک اور ڈھول والا گانا بنائیں</button>
     </div>
 
-    <!-- پرو ورژن پیمنٹ سیکشن (جب 5 گانے ختم ہوں) -->
+    <!-- اونر ایزی پیسہ پیمنٹ سیکشن (شیرز احمد) -->
     <div id="payment-section" class="payment-box hidden">
-        <h3 style="color: #d4af37; margin-top: 0;">مفت لمیٹ ختم! پرو پاس حاصل کریں</h3>
-        <p style="font-size: 13px; color: #cbd5e1;">لائف ٹائم لامحدود گانوں کے لیے صرف 1,000 روپے پے کریں:</p>
-        <button class="pay-btn-ep" onclick="buyPro('EasyPaisa')">🟢 ایزی پیسہ (EasyPaisa) سے 1000 روپے پے کریں</button>
-        <button class="pay-btn-jc" onclick="buyPro('JazzCash')">🔴 جاز کیش (JazzCash) سے 1000 روپے پے کریں</button>
-        <button class="pay-btn-bank" onclick="buyPro('Bank Transfer')">🔵 بینک اکاؤنٹ سے 1000 روپے پے کریں</button>
+        <h3 style="color: #d4af37; margin-top: 0;">لائف ٹائم پرو پاس خریدیں</h3>
+        <p style="font-size: 13px; color: #cbd5e1;">کسی بھی نیٹ ورک (EasyPaisa / JazzCash / Bank) سے نیچے دیے گئے اونر کے اکاؤنٹ میں 1,000 روپے بھیجیں:</p>
+        
+        <div class="owner-account-info">
+            📱 ایزی پیسہ نمبر: 03208629040<br>
+            👤 اکاؤنٹ ہولڈر کا نام: Sheraz Ahmmad
+        </div>
+
+        <button onclick="buyPro('EasyPaisa / JazzCash / Bank')" style="background: #00a651; color: white; margin-top: 10px;">✅ پیمنٹ کر دی ہے، پرو پاس ایکٹیویٹ کریں</button>
     </div>
 
     <div id="message"></div>
 
-    <!-- آڈیو اور وائرل شیئر باکس -->
+    <!-- آڈیو رزلٹ -->
     <div id="audio-result" style="margin-top: 15px; text-align: center;" class="hidden">
         <p id="result-info" style="color: #4ade80; font-weight: bold; font-size: 13px;"></p>
         <audio id="audio-player" controls style="width: 100%; margin-top: 8px;"></audio>
-        <a id="download-link" href="#" class="download-btn" download="Shiraz_Viral_Song.mp3">⬇️ گانا ڈاؤن لوڈ کریں</a>
+        <a id="download-link" href="#" class="download-btn" download="Shiraz_Viral_Dhol_Song.mp3">⬇️ گانا ڈاؤن لوڈ کریں</a>
         
         <div class="viral-box">
             <b>🔗 ٹک ٹاک / یوٹیوب وائرل لنک:</b><br>
@@ -205,6 +139,7 @@
         let data = await res.json();
         if (res.ok) {
             showMessage(data.message, "success");
+            if ("vibrate" in navigator) { navigator.vibrate(200); }
             document.getElementById('step-phone').classList.add('hidden');
             document.getElementById('step-otp').classList.remove('hidden');
         } else { showMessage(data.message, "error"); }
@@ -217,7 +152,7 @@
         let res = await fetch('/verify-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone, otp: otpCode })
+            body: JSON.stringify({ phone: userPhone })
         });
         let data = await res.json();
         if (res.ok) {
@@ -228,7 +163,7 @@
     }
 
     async function buyPro(method) {
-        showMessage(`${method} سے پیمنٹ تصدیق ہو رہی ہے...`, "success");
+        showMessage("اونر شیرز احمد کے اکاؤنٹ میں پیمنٹ کی تصدیق کی جا رہی ہے...", "success");
         let res = await fetch('/buy-pro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -246,7 +181,7 @@
         let lyrics = document.getElementById('lyrics').value.trim();
         if (!lyrics) { showMessage("شاعری درج کریں!", "error"); return; }
 
-        showMessage("ہیوی بیس اور وائرل دھم دھماٹ ٹریک تیار ہو رہا ہے...", "success");
+        showMessage("ڈھول کی گہری دھمک اور ثقافتی ساز تیار ہو رہے ہیں...", "success");
 
         let res = await fetch('/generate-music', {
             method: 'POST',
@@ -264,16 +199,12 @@
         if (res.ok) {
             showMessage(data.message, "success");
             document.getElementById('audio-result').classList.remove('hidden');
-            document.getElementById('result-info').innerText = `زبان: ${data.detected_lang} | موڈ: ${data.detected_mood}`;
+            document.getElementById('result-info').innerText = `ثقافت و سُر: ${data.detected_culture}`;
             document.getElementById('audio-player').src = data.audio_url;
             document.getElementById('download-link').href = data.audio_url;
             document.getElementById('viral-url').innerText = data.viral_link;
 
-            // ہارڈویئر وائبریشن اور شاکنگ ایفیکٹ
-            if ("vibrate" in navigator) { navigator.vibrate([300, 150, 300, 150, 500]); }
-            const box = document.getElementById('app-container');
-            box.classList.add('shaking');
-            setTimeout(() => box.classList.remove('shaking'), 4000);
+            if ("vibrate" in navigator) { navigator.vibrate([150, 100, 150, 100, 300]); }
         } else {
             showMessage(data.message, "error");
         }
