@@ -13,8 +13,6 @@ try:
             cred = credentials.Certificate("serviceAccountKey.json")
             firebase_admin.initialize_app(cred)
             db = firestore.client()
-        else:
-            print("انتباہ: serviceAccountKey.json فائل نہیں ملی۔")
 except Exception as e:
     print(f"فائر بیس کنکشن کا مسئلہ: {str(e)}")
 
@@ -39,7 +37,7 @@ def send_otp():
             if not user_doc.exists:
                 user_ref.set({"phone": phone_number, "verified": False, "songs_count": 0})
 
-        return jsonify({"status": "success", "message": "او ٹی پی (OTP) کامیابی سے بھیج دیا گیا ہے!"})
+        return jsonify({"status": "success", "message": "او ٹی پی کامیابی سے بھیج دیا گیا ہے!"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"سسٹم خرابی: {str(e)}"}), 500
 
@@ -55,7 +53,7 @@ def verify_otp():
             user_ref = db.collection('users').document(phone_number)
             user_ref.update({"verified": True})
 
-        return jsonify({"status": "success", "message": "تصدیق کامیاب ہو گئی! شاہانہ سٹوڈیو میں خوش آمدید۔"})
+        return jsonify({"status": "success", "message": "تصدیق کامیاب! شاہانہ اے آئی سٹوڈیو تیار ہے۔"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"تصدیق میں خرابی: {str(e)}"}), 500
 
@@ -64,12 +62,37 @@ def generate_music():
     try:
         data = request.json
         phone_number = data.get('phone')
-        lyrics = data.get('lyrics')
-        mood = data.get('mood', 'Sufi')
+        lyrics = data.get('lyrics', '')
         
         if not phone_number or not lyrics:
             return jsonify({"status": "error", "message": "فون نمبر اور شاعری کے بول لازمی ہیں!"}), 400
 
+        # 1. آٹومیٹک لینگویج ڈیٹیکشن (زبان کی شناخت)
+        detected_lang = "اردو / سرائیکی"
+        if any(ord(char) < 128 for char in lyrics):
+            # اگر انگریزی حروف زیادہ ہوں
+            if sum(1 for c in lyrics if c.isascii()) > len(lyrics) / 2:
+                detected_lang = "English (انگریزی)"
+        elif any(word in lyrics for word in ["من", "دل", "باران", "يار"]):
+            detected_lang = "فارسی (Persian)"
+        elif any(word in lyrics for word in ["قلب", "حزن", "ليل"]):
+            detected_lang = "عربی (Arabic)"
+        elif any(word in lyrics for word in ["تہہ", "کیوں", "ندا"]):
+            detected_lang = "پشتو (Pashto)"
+
+        # 2. سمارٹ موڈ اینڈ بیٹ ڈیٹیکشن (غم یا جوشیلا ڈھول بیٹ)
+        detected_mood = "شاہانہ صوفیانہ سوز"
+        audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        
+        lyrics_lower = lyrics.lower()
+        if "غم" in lyrics_lower or "دہلا" in lyrics_lower or "روتا" in lyrics_lower or "درد" in lyrics_lower or "sad" in lyrics_lower:
+            detected_mood = "دل دہلا دینے والا غم (Deep Sad Melancholy)"
+            audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+        elif "جوشیلا" in lyrics_lower or "دھول" in lyrics_lower or "دہم" in lyrics_lower or "بیٹ" in lyrics_lower or "energetic" in lyrics_lower or "dhol" in lyrics_lower:
+            detected_mood = "دھم دھماٹ اور جوشیلا ڈھول بیٹ (Heavy Dhol & Beats)"
+            audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+
+        # 3. فائر بیس 5 گانوں کی لمیٹ چیک
         songs_count = 0
         if db:
             user_ref = db.collection('users').document(phone_number)
@@ -92,15 +115,14 @@ def generate_music():
                 songs_count = 1
 
         songs_left = max(0, 5 - songs_count)
-        
-        # اصلی اور ہائی کوالٹی رائل آڈیو ڈیمو لنک
-        generated_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
 
         return jsonify({
             "status": "success",
-            "audio_url": generated_audio_url,
+            "audio_url": audio_url,
+            "detected_lang": detected_lang,
+            "detected_mood": detected_mood,
             "songs_left": songs_left,
-            "message": f"دل دہلا دینے والا ترنّم تیار ہے! آپ کے پاس {songs_left} مفت گانے باقی ہیں۔"
+            "message": f"زبان: {detected_lang} | انداز: {detected_mood} | بقایا مفت گانے: {songs_left}"
         })
 
     except Exception as e:
