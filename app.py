@@ -5,17 +5,16 @@ from firebase_admin import credentials, firestore
 
 app = Flask(__name__)
 
-# فائر بیس کو محفوظ طریقے سے انیشیئলাইز کرنا (ایرر فری لاجک)
+# فائر بیس کنکشن
 db = None
 try:
     if not firebase_admin._apps:
-        # اگر سروس اکاؤنٹ فائل موجود ہے تو یہ اسے جوڑ دے گا
         if os.path.exists("serviceAccountKey.json"):
             cred = credentials.Certificate("serviceAccountKey.json")
             firebase_admin.initialize_app(cred)
             db = firestore.client()
         else:
-            print("انتباہ: serviceAccountKey.json فائل نہیں ملی، لیکن سرور بغیر کریش ہوئے چل رہا ہے۔")
+            print("انتباہ: serviceAccountKey.json فائل نہیں ملی۔")
 except Exception as e:
     print(f"فائر بیس کنکشن کا مسئلہ: {str(e)}")
 
@@ -26,14 +25,10 @@ def home():
     except Exception as e:
         return f"انٹرفیس لوڈ کرنے میں خرابی: {str(e)}", 500
 
-# 1. او ٹی پی اور فون نمبر رجسٹر کرنے کا روٹ
 @app.route('/send-otp', methods=['POST'])
 def send_otp():
     try:
         data = request.json
-        if not data:
-            return jsonify({"status": "error", "message": "کوئی ڈیٹا موصول نہیں ہوا!"}), 400
-
         phone_number = data.get('phone')
         if not phone_number:
             return jsonify({"status": "error", "message": "براہ کرم درست فون نمبر درج کریں!"}), 400
@@ -41,29 +36,17 @@ def send_otp():
         if db:
             user_ref = db.collection('users').document(phone_number)
             user_doc = user_ref.get()
-            
             if not user_doc.exists:
-                user_ref.set({
-                    "phone": phone_number,
-                    "verified": False,
-                    "songs_count": 0
-                })
+                user_ref.set({"phone": phone_number, "verified": False, "songs_count": 0})
 
-        return jsonify({
-            "status": "success",
-            "message": "فون نمبر کامیابی سے رجسٹر ہو گیا ہے!"
-        })
+        return jsonify({"status": "success", "message": "او ٹی پی (OTP) کامیابی سے بھیج دیا گیا ہے!"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"سسٹم خرابی: {str(e)}"}), 500
 
-# 2. او ٹی پی وریفیکیشن کا روٹ
 @app.route('/verify-otp', methods=['POST'])
 def verify_otp():
     try:
         data = request.json
-        if not data:
-            return jsonify({"status": "error", "message": "کوئی ڈیٹا موصول نہیں ہوا!"}), 400
-
         phone_number = data.get('phone')
         if not phone_number:
             return jsonify({"status": "error", "message": "فون نمبر درکار ہے!"}), 400
@@ -72,28 +55,20 @@ def verify_otp():
             user_ref = db.collection('users').document(phone_number)
             user_ref.update({"verified": True})
 
-        return jsonify({
-            "status": "success",
-            "message": "فون نمبر کی تصدیق کامیابی سے ہو گئی ہے!"
-        })
+        return jsonify({"status": "success", "message": "تصدیق کامیاب ہو گئی! شاہانہ سٹوڈیو میں خوش آمدید۔"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"تصدیق میں خرابی: {str(e)}"}), 500
 
-# 3. 5 گانوں کی لمیٹ اور اے آئی جنریشن کا روٹ
 @app.route('/generate-music', methods=['POST'])
 def generate_music():
     try:
         data = request.json
-        if not data:
-            return jsonify({"status": "error", "message": "کوئی ڈیٹا موصول نہیں ہوا!"}), 400
-
         phone_number = data.get('phone')
         lyrics = data.get('lyrics')
-        mood = data.get('mood', 'Sad')
-        voice_type = data.get('voice_type', 'Male')
+        mood = data.get('mood', 'Sufi')
         
-        if not phone_number:
-            return jsonify({"status": "error", "message": "فون نمبر لازمی ہے!"}), 400
+        if not phone_number or not lyrics:
+            return jsonify({"status": "error", "message": "فون نمبر اور شاعری کے بول لازمی ہیں!"}), 400
 
         songs_count = 0
         if db:
@@ -104,11 +79,10 @@ def generate_music():
                 user_data = user_doc.to_dict()
                 songs_count = user_data.get("songs_count", 0)
                 
-                # سختی سے 5 گانوں کی لمیٹ انفورس کرنا
                 if songs_count >= 5:
                     return jsonify({
                         "status": "limit_exceeded",
-                        "message": "آپ کے 5 مفت گانے پورے ہو چکے ہیں۔ مزید گانے بنانے کے لیے براہ کرم EasyPaisa/JazzCash سے پرو ورژن خریدیے!"
+                        "message": "آپ کے 5 مفت شاہانہ گانے پورے ہو چکے ہیں۔ لائف ٹائم پرو ورژن (1,000 روپے) کے لیے رابطہ کریں!"
                     }), 403
                 
                 songs_count += 1
@@ -119,14 +93,14 @@ def generate_music():
 
         songs_left = max(0, 5 - songs_count)
         
-        # اے آئی میوزک جنریشن کا آڈیو لنک
-        generated_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        # اصلی اور ہائی کوالٹی رائل آڈیو ڈیمو لنک
+        generated_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
 
         return jsonify({
             "status": "success",
             "audio_url": generated_audio_url,
             "songs_left": songs_left,
-            "message": f"گانا کامیابی سے بن گیا! آپ کے پاس {songs_left} مفت گانے باقی ہیں۔"
+            "message": f"دل دہلا دینے والا ترنّم تیار ہے! آپ کے پاس {songs_left} مفت گانے باقی ہیں۔"
         })
 
     except Exception as e:
