@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiraz Luxury Sound AI - سمارٹ اے آئی سٹوڈیو</title>
+    <title>Shiraz Luxury Sound AI - وائرل میوزک سٹوڈیو</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #05050b, #15132d);
+            background: linear-gradient(135deg, #03040a, #110f24);
             color: #f1f5f9;
             margin: 0;
             padding: 20px;
@@ -17,56 +17,52 @@
             min-height: 100vh;
         }
         .container {
-            background: rgba(15, 23, 42, 0.92);
-            padding: 35px;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
             width: 100%;
             max-width: 500px;
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.5);
         }
         h1 {
             text-align: center;
             color: #d4af37;
-            font-size: 26px;
-            margin-bottom: 10px;
-            font-weight: 800;
+            font-size: 25px;
+            margin-bottom: 5px;
+            font-weight: 900;
         }
         .subtitle {
             text-align: center;
             color: #94a3b8;
             font-size: 13px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #e2e8f0;
             font-size: 14px;
         }
         input, textarea {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #334155;
+            padding: 12px;
+            border: 1px solid #475569;
             background: #020617;
             color: #fff;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus {
-            border-color: #d4af37;
         }
         button {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             background: linear-gradient(135deg, #b8860b, #d4af37);
             color: #000;
             border: none;
@@ -74,15 +70,11 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.3s;
+            transition: transform 0.2s;
         }
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        .hidden {
-            display: none;
-        }
+        button:hover { transform: translateY(-2px); }
+        .hidden { display: none; }
+        
         #message {
             margin-top: 15px;
             text-align: center;
@@ -91,13 +83,36 @@
             border-radius: 8px;
             font-size: 13px;
         }
-        .success { background: rgba(20, 83, 45, 0.5); color: #4ade80; border: 1px solid #166534; }
-        .error { background: rgba(127, 29, 29, 0.5); color: #f87171; border: 1px solid #991b1b; }
-        
+        .success { background: rgba(20, 83, 45, 0.6); color: #4ade80; border: 1px solid #166534; }
+        .error { background: rgba(127, 29, 29, 0.6); color: #f87171; border: 1px solid #991b1b; }
+
+        /* پیمنٹ باکس اور وائرل شیئر سٹائل */
+        .payment-box {
+            background: rgba(30, 41, 59, 0.95);
+            border: 2px dashed #d4af37;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pay-btn-ep { background: #00a651; color: white; margin-top: 10px; }
+        .pay-btn-jc { background: #ed1c24; color: white; margin-top: 10px; }
+        .pay-btn-bank { background: #003366; color: white; margin-top: 10px; }
+
+        .viral-box {
+            background: #020617;
+            border: 1px solid #38bdf8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            word-break: break-all;
+            font-size: 12px;
+            color: #38bdf8;
+        }
         .download-btn {
             display: inline-block;
-            margin-top: 15px;
-            padding: 12px 25px;
+            margin-top: 12px;
+            padding: 12px;
             background: #16a34a;
             color: white;
             text-decoration: none;
@@ -107,54 +122,65 @@
             width: 100%;
             box-sizing: border-box;
         }
-        .download-btn:hover { background: #15803d; }
 
-        /* وائبریشن اور دھم دھماٹ کے لیے پلْسنگ اینیمیشن */
-        @keyframes pulse-vibe {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0.2); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+        @keyframes heavy-vibe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
-        .vibrating {
-            animation: pulse-vibe 0.8s infinite;
-        }
+        .shaking { animation: heavy-vibe 0.5s infinite; }
     </style>
 </head>
 <body>
 
-<div class="container" id="main-container">
+<div class="container" id="app-container">
     <h1>Shiraz Luxury Sound AI</h1>
-    <div class="subtitle">آٹومیٹک زبان کی شناخت اور دل دہلا دینے والا سمارٹ سٹوڈیو</div>
+    <div class="subtitle">ٹک ٹاک اور یوٹیوب پر دھوم مچانے والا وائرل صوتی سٹوڈیو</div>
 
-    <!-- سٹیپ 1: فون نمبر -->
+    <!-- سٹیپ 1 -->
     <div id="step-phone" class="form-group">
-        <label for="phone">موبائل نمبر درج کریں:</label>
-        <input type="text" id="phone" placeholder="مثلاً: 03001234567">
-        <button onclick="sendOtp()" style="margin-top: 15px;">او ٹی پی (OTP) حاصل کریں</button>
+        <label>موبائل نمبر درج کریں:</label>
+        <input type="text" id="phone" placeholder="03001234567">
+        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی حاصل کریں</button>
     </div>
 
-    <!-- سٹیپ 2: او ٹی پی ویریفیکیشن -->
+    <!-- سٹیپ 2 -->
     <div id="step-otp" class="form-group hidden">
-        <label for="otp">تصدیقی کوڈ (OTP):</label>
-        <input type="text" id="otp" placeholder="کوڈ یہاں درج کریں">
-        <button onclick="verifyOtp()" style="margin-top: 15px;">تصدیق کریں</button>
+        <label>تصدیقی کوڈ (OTP):</label>
+        <input type="text" id="otp" placeholder="کوڈ درج کریں">
+        <button onclick="verifyOtp()" style="margin-top: 12px;">تصدیق کریں</button>
     </div>
 
-    <!-- سٹیپ 3: سمارٹ لیرکس سٹوڈیو -->
+    <!-- سٹیپ 3: سٹوڈیو -->
     <div id="step-studio" class="hidden">
         <div class="form-group">
-            <label for="lyrics">شاعری یا الفاظ درج کریں (مثلاً: غم کی طرح یا جوشیلا ڈھول بیٹ):</label>
-            <textarea id="lyrics" rows="5" placeholder="اپنے الفاظ یہاں لکھیں، سسٹم خود زبان اور موڈ پہچان لے گا..."></textarea>
+            <label>شاعری یا الفاظ (لکھیں 'جوشیلا دھول بیٹ' یا 'غم'):</label>
+            <textarea id="lyrics" rows="4" placeholder="اپنے دل کے بول یہاں لکھیں..."></textarea>
         </div>
-        <button onclick="generateMusic()">سمارٹ شاہانہ گانا جنریٹ کریں</button>
+        <button onclick="generateMusic()">🔥 ہیوی بیس گانا جنریٹ کریں</button>
+    </div>
+
+    <!-- پرو ورژن پیمنٹ سیکشن (جب 5 گانے ختم ہوں) -->
+    <div id="payment-section" class="payment-box hidden">
+        <h3 style="color: #d4af37; margin-top: 0;">مفت لمیٹ ختم! پرو پاس حاصل کریں</h3>
+        <p style="font-size: 13px; color: #cbd5e1;">لائف ٹائم لامحدود گانوں کے لیے صرف 1,000 روپے پے کریں:</p>
+        <button class="pay-btn-ep" onclick="buyPro('EasyPaisa')">🟢 ایزی پیسہ (EasyPaisa) سے 1000 روپے پے کریں</button>
+        <button class="pay-btn-jc" onclick="buyPro('JazzCash')">🔴 جاز کیش (JazzCash) سے 1000 روپے پے کریں</button>
+        <button class="pay-btn-bank" onclick="buyPro('Bank Transfer')">🔵 بینک اکاؤنٹ سے 1000 روپے پے کریں</button>
     </div>
 
     <div id="message"></div>
 
-    <div id="audio-result" style="margin-top: 20px; text-align: center;" class="hidden">
-        <p id="result-info" style="color: #4ade80; font-weight: bold; font-size: 14px;"></p>
-        <audio id="audio-player" controls style="width: 100%; margin-top: 10px; border-radius: 8px;"></audio>
-        <a id="download-link" href="#" class="download-btn" download="Shiraz_Luxury_Song.mp3">گانا ڈائریکٹ ڈاؤن لوڈ کریں (Download)</a>
+    <!-- آڈیو اور وائرل شیئر باکس -->
+    <div id="audio-result" style="margin-top: 15px; text-align: center;" class="hidden">
+        <p id="result-info" style="color: #4ade80; font-weight: bold; font-size: 13px;"></p>
+        <audio id="audio-player" controls style="width: 100%; margin-top: 8px;"></audio>
+        <a id="download-link" href="#" class="download-btn" download="Shiraz_Viral_Song.mp3">⬇️ گانا ڈاؤن لوڈ کریں</a>
+        
+        <div class="viral-box">
+            <b>🔗 ٹک ٹاک / یوٹیوب وائرل لنک:</b><br>
+            <span id="viral-url"></span>
+        </div>
     </div>
 </div>
 
@@ -169,99 +195,87 @@
 
     async function sendOtp() {
         userPhone = document.getElementById('phone').value.trim();
-        if (!userPhone) {
-            showMessage("براہ کرم درست فون نمبر لکھیں!", "error");
-            return;
-        }
+        if (!userPhone) { showMessage("فون نمبر لکھیں!", "error"); return; }
 
-        try {
-            let res = await fetch('/send-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone })
-            });
-            let data = await res.json();
-            if (res.ok) {
-                showMessage(data.message, "success");
-                document.getElementById('step-phone').classList.add('hidden');
-                document.getElementById('step-otp').classList.remove('hidden');
-            } else {
-                showMessage(data.message, "error");
-            }
-        } catch (err) {
-            showMessage("سرور سے رابطہ قائم نہیں ہو سکا!", "error");
-        }
+        let res = await fetch('/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: userPhone })
+        });
+        let data = await res.json();
+        if (res.ok) {
+            showMessage(data.message, "success");
+            document.getElementById('step-phone').classList.add('hidden');
+            document.getElementById('step-otp').classList.remove('hidden');
+        } else { showMessage(data.message, "error"); }
     }
 
     async function verifyOtp() {
         let otpCode = document.getElementById('otp').value.trim();
-        if (!otpCode) {
-            showMessage("تصدیقی کوڈ درج کرنا لازمی ہے!", "error");
-            return;
-        }
+        if (!otpCode) { showMessage("کوڈ درج کریں!", "error"); return; }
 
-        try {
-            let res = await fetch('/verify-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone, otp: otpCode })
-            });
-            let data = await res.json();
-            if (res.ok) {
-                showMessage(data.message, "success");
-                document.getElementById('step-otp').classList.add('hidden');
-                document.getElementById('step-studio').classList.remove('hidden');
-            } else {
-                showMessage(data.message, "error");
-            }
-        } catch (err) {
-            showMessage("تصدیق کے عمل میں خرابی آگئی!", "error");
-        }
+        let res = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: userPhone, otp: otpCode })
+        });
+        let data = await res.json();
+        if (res.ok) {
+            showMessage(data.message, "success");
+            document.getElementById('step-otp').classList.add('hidden');
+            document.getElementById('step-studio').classList.remove('hidden');
+        } else { showMessage(data.message, "error"); }
+    }
+
+    async function buyPro(method) {
+        showMessage(`${method} سے پیمنٹ تصدیق ہو رہی ہے...`, "success");
+        let res = await fetch('/buy-pro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: userPhone, method: method })
+        });
+        let data = await res.json();
+        if (res.ok) {
+            showMessage(data.message, "success");
+            document.getElementById('payment-section').classList.add('hidden');
+            document.getElementById('step-studio').classList.remove('hidden');
+        } else { showMessage(data.message, "error"); }
     }
 
     async function generateMusic() {
         let lyrics = document.getElementById('lyrics').value.trim();
-        if (!lyrics) {
-            showMessage("براہ کرم شاعری یا الفاظ درج کریں!", "error");
+        if (!lyrics) { showMessage("شاعری درج کریں!", "error"); return; }
+
+        showMessage("ہیوی بیس اور وائرل دھم دھماٹ ٹریک تیار ہو رہا ہے...", "success");
+
+        let res = await fetch('/generate-music', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: userPhone, lyrics: lyrics })
+        });
+        let data = await res.json();
+
+        if (res.status === 403) {
+            showMessage(data.message, "error");
+            document.getElementById('payment-section').classList.remove('hidden');
             return;
         }
 
-        showMessage("اے آئی زبان اور موڈ کا تجزیہ کر کے دھم دھماٹ ٹریک تیار کر رہا ہے...", "success");
+        if (res.ok) {
+            showMessage(data.message, "success");
+            document.getElementById('audio-result').classList.remove('hidden');
+            document.getElementById('result-info').innerText = `زبان: ${data.detected_lang} | موڈ: ${data.detected_mood}`;
+            document.getElementById('audio-player').src = data.audio_url;
+            document.getElementById('download-link').href = data.audio_url;
+            document.getElementById('viral-url').innerText = data.viral_link;
 
-        try {
-            let res = await fetch('/generate-music', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone, lyrics: lyrics })
-            });
-            let data = await res.json();
-
-            if (res.status === 403) {
-                showMessage(data.message, "error");
-                return;
-            }
-
-            if (res.ok) {
-                showMessage(data.message, "success");
-                document.getElementById('audio-result').classList.remove('hidden');
-                document.getElementById('result-info').innerText = `شناخت شدہ زبان: ${data.detected_lang} | موڈ: ${data.detected_mood}`;
-                document.getElementById('audio-player').src = data.audio_url;
-                document.getElementById('download-link').href = data.audio_url;
-
-                // اگر جوشیلا یا ڈھول بیٹ ہو تو موبائل/سکرین پر ہلکی وائبریشن اثرات (پلسنگ) شروع کریں
-                if (data.detected_mood.includes("دھم دھماٹ") && "vibrate" in navigator) {
-                    navigator.vibrate([200, 100, 200, 100, 400]); // ہارڈویئر وائبریشن
-                }
-                
-                const container = document.getElementById('main-container');
-                container.classList.add('vibrating');
-                setTimeout(() => container.classList.remove('vibrating'), 4000);
-
-            } else {
-                showMessage(data.message, "error");
-            }
-        } catch (err) {
-            showMessage("سسٹم میں تکنیکی خرابی ہوگئی!", "error");
+            // ہارڈویئر وائبریشن اور شاکنگ ایفیکٹ
+            if ("vibrate" in navigator) { navigator.vibrate([300, 150, 300, 150, 500]); }
+            const box = document.getElementById('app-container');
+            box.classList.add('shaking');
+            setTimeout(() => box.classList.remove('shaking'), 4000);
+        } else {
+            showMessage(data.message, "error");
         }
     }
 </script>
