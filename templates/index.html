@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiraz Luxury Sound AI - شاہانہ صوتی سٹوڈیو</title>
+    <title>Shiraz Luxury Sound AI - سمارٹ اے آئی سٹوڈیو</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #090d16, #1a1836);
+            background: linear-gradient(135deg, #05050b, #15132d);
             color: #f1f5f9;
             margin: 0;
             padding: 20px;
@@ -17,27 +17,26 @@
             min-height: 100vh;
         }
         .container {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.92);
             padding: 35px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
             width: 100%;
             max-width: 500px;
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(212, 175, 55, 0.3); /* رائل گولڈ بارڈر */
+            border: 1px solid rgba(212, 175, 55, 0.4);
         }
         h1 {
             text-align: center;
-            color: #d4af37; /* گولڈن کلر */
+            color: #d4af37;
             font-size: 26px;
             margin-bottom: 10px;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
         .subtitle {
             text-align: center;
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 25px;
         }
         .form-group {
@@ -48,8 +47,9 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #e2e8f0;
+            font-size: 14px;
         }
-        input, textarea, select {
+        input, textarea {
             width: 100%;
             padding: 14px;
             border: 1px solid #334155;
@@ -61,7 +61,7 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        input:focus, textarea:focus, select:focus {
+        input:focus, textarea:focus {
             border-color: #d4af37;
         }
         button {
@@ -89,7 +89,7 @@
             font-weight: 500;
             padding: 12px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
         }
         .success { background: rgba(20, 83, 45, 0.5); color: #4ade80; border: 1px solid #166534; }
         .error { background: rgba(127, 29, 29, 0.5); color: #f87171; border: 1px solid #991b1b; }
@@ -107,55 +107,53 @@
             width: 100%;
             box-sizing: border-box;
         }
-        .download-btn:hover {
-            background: #15803d;
+        .download-btn:hover { background: #15803d; }
+
+        /* وائبریشن اور دھم دھماٹ کے لیے پلْسنگ اینیمیشن */
+        @keyframes pulse-vibe {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0.2); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+        }
+        .vibrating {
+            animation: pulse-vibe 0.8s infinite;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="main-container">
     <h1>Shiraz Luxury Sound AI</h1>
-    <div class="subtitle">جہاں الفاظ روح کو چھو لیں اور ترنّم دنگ کر دے</div>
+    <div class="subtitle">آٹومیٹک زبان کی شناخت اور دل دہلا دینے والا سمارٹ سٹوڈیو</div>
 
-    <!-- سٹیپ 1: فون نمبر ان پٹ -->
+    <!-- سٹیپ 1: فون نمبر -->
     <div id="step-phone" class="form-group">
-        <label for="phone">اپنا موبائل نمبر درج کریں:</label>
+        <label for="phone">موبائل نمبر درج کریں:</label>
         <input type="text" id="phone" placeholder="مثلاً: 03001234567">
         <button onclick="sendOtp()" style="margin-top: 15px;">او ٹی پی (OTP) حاصل کریں</button>
     </div>
 
-    <!-- سٹیپ 2: او ٹی پی وریفیکیشن -->
+    <!-- سٹیپ 2: او ٹی پی ویریفیکیشن -->
     <div id="step-otp" class="form-group hidden">
-        <label for="otp">موصول ہونے والا تصدیقی کوڈ (OTP):</label>
+        <label for="otp">تصدیقی کوڈ (OTP):</label>
         <input type="text" id="otp" placeholder="کوڈ یہاں درج کریں">
-        <button onclick="verifyOtp()" style="margin-top: 15px;">تصدیق کر کے اندر جائیں</button>
+        <button onclick="verifyOtp()" style="margin-top: 15px;">تصدیق کریں</button>
     </div>
 
-    <!-- سٹیپ 3: دل دہلا دینے والا سٹوڈیو -->
+    <!-- سٹیپ 3: سمارٹ لیرکس سٹوڈیو -->
     <div id="step-studio" class="hidden">
         <div class="form-group">
-            <label for="lyrics">اپنے دل کے جذبات اور شاعری کے بول لکھیں:</label>
-            <textarea id="lyrics" rows="5" placeholder="وہ جو ہجرت کی شب ہمیں روتا چھوڑ گیا..."></textarea>
+            <label for="lyrics">شاعری یا الفاظ درج کریں (مثلاً: غم کی طرح یا جوشیلا ڈھول بیٹ):</label>
+            <textarea id="lyrics" rows="5" placeholder="اپنے الفاظ یہاں لکھیں، سسٹم خود زبان اور موڈ پہچان لے گا..."></textarea>
         </div>
-        <div class="form-group">
-            <label for="mood">ترنّم اور روح پرور انداز (Mood):</label>
-            <select id="mood">
-                <option value="Sufi">صوفیانہ سوز و ساز (Sufi Mystic)</option>
-                <option value="Sad">دل دہلا دینے والا درد (Deep Sad)</option>
-                <option value="Ghazal">کلاسیکی غزل (Classical Ghazal)</option>
-                <option value="Romantic">روح پرور رومانوی (Soulful Romantic)</option>
-            </select>
-        </div>
-        <button onclick="generateMusic()">شاہانہ اے آئی گانا جنریٹ کریں</button>
+        <button onclick="generateMusic()">سمارٹ شاہانہ گانا جنریٹ کریں</button>
     </div>
 
     <div id="message"></div>
 
     <div id="audio-result" style="margin-top: 20px; text-align: center;" class="hidden">
-        <p style="color: #4ade80; font-weight: bold; font-size: 16px;">آپ کا شاہانہ گانا تیار ہو چکا ہے!</p>
+        <p id="result-info" style="color: #4ade80; font-weight: bold; font-size: 14px;"></p>
         <audio id="audio-player" controls style="width: 100%; margin-top: 10px; border-radius: 8px;"></audio>
-        <!-- آسان اور ون-کلک ڈاؤن لوڈ بٹن -->
         <a id="download-link" href="#" class="download-btn" download="Shiraz_Luxury_Song.mp3">گانا ڈائریکٹ ڈاؤن لوڈ کریں (Download)</a>
     </div>
 </div>
@@ -183,7 +181,6 @@
                 body: JSON.stringify({ phone: userPhone })
             });
             let data = await res.json();
-
             if (res.ok) {
                 showMessage(data.message, "success");
                 document.getElementById('step-phone').classList.add('hidden');
@@ -210,7 +207,6 @@
                 body: JSON.stringify({ phone: userPhone, otp: otpCode })
             });
             let data = await res.json();
-
             if (res.ok) {
                 showMessage(data.message, "success");
                 document.getElementById('step-otp').classList.add('hidden');
@@ -219,26 +215,24 @@
                 showMessage(data.message, "error");
             }
         } catch (err) {
-            showMessage("تصدیق کے عمل میں خرابی پیش آگئی!", "error");
+            showMessage("تصدیق کے عمل میں خرابی آگئی!", "error");
         }
     }
 
     async function generateMusic() {
         let lyrics = document.getElementById('lyrics').value.trim();
-        let mood = document.getElementById('mood').value;
-
         if (!lyrics) {
-            showMessage("براہ کرم کچھ دلکش شعر یا لیرکس درج کریں!", "error");
+            showMessage("براہ کرم شاعری یا الفاظ درج کریں!", "error");
             return;
         }
 
-        showMessage("اے آئی شاہانہ صوتی ترنّم تیار کر رہا ہے، ذرا انتظار کیجیے...", "success");
+        showMessage("اے آئی زبان اور موڈ کا تجزیہ کر کے دھم دھماٹ ٹریک تیار کر رہا ہے...", "success");
 
         try {
             let res = await fetch('/generate-music', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: userPhone, lyrics: lyrics, mood: mood })
+                body: JSON.stringify({ phone: userPhone, lyrics: lyrics })
             });
             let data = await res.json();
 
@@ -250,13 +244,24 @@
             if (res.ok) {
                 showMessage(data.message, "success");
                 document.getElementById('audio-result').classList.remove('hidden');
+                document.getElementById('result-info').innerText = `شناخت شدہ زبان: ${data.detected_lang} | موڈ: ${data.detected_mood}`;
                 document.getElementById('audio-player').src = data.audio_url;
                 document.getElementById('download-link').href = data.audio_url;
+
+                // اگر جوشیلا یا ڈھول بیٹ ہو تو موبائل/سکرین پر ہلکی وائبریشن اثرات (پلسنگ) شروع کریں
+                if (data.detected_mood.includes("دھم دھماٹ") && "vibrate" in navigator) {
+                    navigator.vibrate([200, 100, 200, 100, 400]); // ہارڈویئر وائبریشن
+                }
+                
+                const container = document.getElementById('main-container');
+                container.classList.add('vibrating');
+                setTimeout(() => container.classList.remove('vibrating'), 4000);
+
             } else {
                 showMessage(data.message, "error");
             }
         } catch (err) {
-            showMessage("گانا بناتے وقت سسٹم میں تکنیکی خرابی ہوگئی!", "error");
+            showMessage("سسٹم میں تکنیکی خرابی ہوگئی!", "error");
         }
     }
 </script>
