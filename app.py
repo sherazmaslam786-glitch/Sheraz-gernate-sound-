@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, render_template, request, jsonify
 
@@ -23,31 +22,28 @@ def generate_music():
 
         phone_number = data.get('phone')
         lyrics = data.get('lyrics')
-        mood = data.get('mood', 'Sad') # ڈیفالٹ موڈ غمگین
-        voice_type = data.get('voice_type', 'Male') # ڈیفالٹ آواز مرد
+        mood = data.get('mood', 'Sad')
+        voice_type = data.get('voice_type', 'Male')
         
-        # فون نمبر کی جانچ پڑتال
         if not phone_number:
             return jsonify({
                 "status": "error",
                 "message": "براہ کرم اپنا فون نمبر درج کریں!"
-            }, 400)
+            }), 400
 
-        # فری لمیٹ چیک کرنا (5 گانے مفت)
         if phone_number not in user_song_counts:
             user_song_counts[phone_number] = 0
             
         if user_song_counts[phone_number] >= 5:
             return jsonify({
                 "status": "limit_exceeded",
-                "message": "آپ کے 5 مفت گانے پورے ہو چکے ہیں۔ مزید دل کو چھو لینے والے گانے بنانے کے لیے براہ کرم Pro ورژن خریدیے (Easypaisa/JazzCash)!"
+                "message": "آپ کے 5 مفت گانے پورے ہو چکے ہیں۔ مزید دل کو چھو لینے والے گانے بنانے کے لیے براہ کرم Pro ورژن خریدیے!"
             }), 403
 
-        # گانے کا کاؤנט ایک بڑھانا
         user_song_counts[phone_number] += 1
         songs_left = 5 - user_song_counts[phone_number]
 
-        # AI API انجن کال کرنے کا محفوظ طریقہ
+        # یہاں اب کوما بالکل درست طریقے سے لگا دیا گیا ہے
         generated_audio_url = call_ai_music_api(lyrics, mood, voice_type)
 
         return jsonify({
@@ -58,18 +54,14 @@ def generate_music():
         })
 
     except Exception as e:
-        # اگر کوئی بھی تکنیکی خرابی آئے تو ایپ کریش نہیں ہوگی بلکہ ایرر بتائے گی
         return jsonify({
             "status": "error",
             "message": f"سسٹم میں خرابی آگئی: {str(e)}"
         }), 500
 
 def call_ai_music_api(lyrics, mood, voice_type):
-    # یہاں اے آئی جنریشن انجن کام کرے گا
-    # فی الحال یہ سٹیبل سیمپل آڈیو ریٹرن کر رہا ہے تاکہ ایپ رکے نہیں
     return "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    # ڈی بگ موڈ کو ہمیشہ آن رکھا ہے تاکہ سرور محفوظ طریقے سے چلے
     app.run(host='0.0.0.0', port=port, debug=True)
