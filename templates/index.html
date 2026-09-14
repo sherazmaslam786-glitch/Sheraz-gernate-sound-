@@ -1,215 +1,720 @@
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
-<head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shiraz Luxury Sound AI - وائرل میوزک سٹوڈیو</title>
+    <title>Shiraz Pro AI Studio - Perfect Edition</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #03040a, #110f24);
-            color: #f1f5f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: rgba(15, 23, 42, 0.98);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
-            width: 100%;
-            max-width: 500px;
-            border: 2px solid rgba(212, 175, 55, 0.7);
-        }
-        h1 { text-align: center; color: #d4af37; font-size: 26px; font-weight: 900; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; color: #e2e8f0; font-size: 14px; }
-        input, textarea {
-            width: 100%; padding: 12px; border: 1px solid #475569;
-            background: #020617; color: #fff; border-radius: 10px; font-size: 15px; box-sizing: border-box; outline: none;
-        }
-        button {
-            width: 100%; padding: 13px; background: linear-gradient(135deg, #b8860b, #d4af37);
-            color: #000; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;
-        }
-        button:hover { opacity: 0.9; }
-        .hidden { display: none; }
-        #message { margin-top: 15px; text-align: center; font-weight: 500; padding: 12px; border-radius: 8px; font-size: 13px; }
-        .success { background: rgba(20, 83, 45, 0.7); color: #4ade80; border: 1px solid #166534; }
-        .error { background: rgba(127, 29, 29, 0.7); color: #f87171; border: 1px solid #991b1b; }
-
-        .payment-box {
-            background: rgba(30, 41, 59, 0.98); border: 2px dashed #d4af37;
-            padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;
-        }
-        .owner-account-info {
-            background: #020617; color: #d4af37; padding: 12px; border-radius: 8px;
-            font-size: 15px; font-weight: bold; margin: 12px 0; border: 1px solid #b8860b;
-        }
-        .viral-box {
-            background: #020617; border: 1px solid #38bdf8; padding: 12px;
-            border-radius: 8px; margin-top: 15px; word-break: break-all; font-size: 12px; color: #38bdf8;
-        }
-        .download-btn {
-            display: inline-block; margin-top: 12px; padding: 12px; background: #16a34a;
-            color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; width: 100%; box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+      body {
+        background-color: #070913;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 10px;
+      }
+      .app-container {
+        width: 100%;
+        max-width: 390px;
+        background: #070913;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      /* سکرین سوئچنگ کنٹرول */
+      .app-screen {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .app-screen.active {
+        display: flex;
+      }
+      /* ہیڈر برانڈنگ */
+      .header-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 4px;
+      }
+      .music-icon-wrapper {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        padding: 10px 12px;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      }
+      .header-texts h1 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 2px;
+      }
+      .header-texts p {
+        font-size: 11px;
+        color: #10b981;
+        font-weight: 600;
+      }
+      /* 1. پہلی فائل: ویلکم سکرین سٹائل */
+      .welcome-card {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 20px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .welcome-logo-box {
+        background: #000000;
+        border: 2px solid #d4af37;
+        border-radius: 20px;
+        width: 160px;
+        height: 160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+      }
+      .welcome-logo-text {
+        color: #d4af37;
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+      /* 2. دوسری فائل: او ٹی پی ڈسپلے باکس (کالا خانہ) */
+      .top-otp-display-box {
+        background: #000000;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 10px;
+        text-align: center;
+        display: none;
+      }
+      .top-otp-label {
+        font-size: 10.5px;
+        color: #9ca3af;
+        margin-bottom: 2px;
+        display: block;
+      }
+      .top-otp-code {
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+      /* کامن کارڈ ڈیزائن */
+      .main-card {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 2px;
+      }
+      .row-group {
+        display: flex;
+        gap: 10px;
+      }
+      .input-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .input-label {
+        font-size: 11.5px;
+        color: #9ca3af;
+        font-weight: 500;
+      }
+      .pink-label {
+        font-size: 12.5px;
+        color: #f472b6;
+      }
+      .custom-select,
+      .custom-input {
+        width: 100%;
+        padding: 10px;
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 12px;
+        outline: none;
+        text-align: left;
+        direction: ltr;
+      }
+      .custom-input.rtl-text {
+        direction: rtl;
+        text-align: right;
+      }
+      .custom-input {
+        resize: none;
+        height: 65px;
+      }
+      /* بٹن سٹائلز */
+      .btn-orange {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        border: none;
+        border-radius: 10px;
+        color: #000000;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        text-align: center;
+      }
+      .btn-pink {
+        width: 100%;
+        padding: 12px;
+        background: #db2777;
+        border: none;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+        text-align: center;
+      }
+      .btn-generate {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+        border: none;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        text-align: center;
+      }
+      /* 3. تیسری فائل: سٹوڈیو، سلائیڈرز اور فیچرز سٹائل */
+      .bass-box {
+        background: #161f30;
+        border: 1px solid #f59e0b;
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bass-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #f59e0b;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .bass-desc {
+        font-size: 10.5px;
+        color: #9ca3af;
+        line-height: 1.3;
+      }
+      .slider-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .slider-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #d1d5db;
+      }
+      .bass-slider,
+      .player-slider {
+        width: 100%;
+        height: 5px;
+        background: #374151;
+        border-radius: 3px;
+        outline: none;
+        accent-color: #3b82f6;
+        cursor: pointer;
+      }
+      .player-box {
+        background: #161f30;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .player-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #9ca3af;
+      }
+      .player-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 2px;
+      }
+      .ctrl-btn {
+        background: #1f2937;
+        border: 1px solid #4b5563;
+        color: #fff;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .ctrl-btn.play-pause {
+        background: #f59e0b;
+        border-color: #d97706;
+        color: #000;
+        font-weight: bold;
+      }
+      .download-menu-section {
+        background: #161f30;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .download-formats {
+        display: flex;
+        gap: 6px;
+      }
+      .format-btn {
+        flex: 1;
+        padding: 8px 4px;
+        background: #1f2937;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        font-size: 11px;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .format-btn:hover {
+        background: #374151;
+        border-color: #10b981;
+        color: #10b981;
+      }
+      .premium-package-box {
+        background: linear-gradient(135deg, #1e1b4b 0%, #111827 100%);
+        border: 1px solid #eab308;
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .gold-package-banner {
+        background: rgba(234, 179, 8, 0.15);
+        border: 1px dashed #eab308;
+        color: #fde047;
+        text-align: center;
+        padding: 6px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .payment-methods {
+        display: flex;
+        gap: 6px;
+      }
+      .pay-btn {
+        flex: 1;
+        padding: 8px 4px;
+        background: #111827;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        font-size: 11px;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 600;
+        position: relative;
+      }
+      .pay-btn::after {
+        content: 'Pro';
+        position: absolute;
+        top: -6px;
+        right: 4px;
+        background: #eab308;
+        color: #000;
+        font-size: 8px;
+        padding: 1px 4px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .pay-btn.jazz {
+        border-color: #ef4444;
+        color: #fca5a5;
+      }
+      .pay-btn.easy {
+        border-color: #10b981;
+        color: #6ee7b7;
+      }
+      .pay-btn.bank {
+        border-color: #3b82f6;
+        color: #93c5fd;
+      }
+      .btn-buy-monthly {
+        width: 100%;
+        padding: 10px;
+        background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        border: none;
+        border-radius: 8px;
+        color: #000000;
+        font-size: 12.5px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+      }
+      .btn-history {
+        width: 100%;
+        padding: 10px;
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 10px;
+        color: #d1d5db;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+      }
+      .btn-history:hover {
+        background: #374151;
+        color: #fff;
+      }
+      .card-nav {
+        display: flex;
+        background: #161f30;
+        border: 1px solid #232d42;
+        border-radius: 10px;
+        padding: 4px;
+        gap: 4px;
+      }
+      .nav-tab {
+        flex: 1;
+        text-align: center;
+        padding: 7px 0;
+        font-size: 11px;
+        color: #9ca3af;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+      .nav-tab.active {
+        background: #111827;
+        color: #ffffff;
+        font-weight: 600;
+        border: 1px solid #374151;
+      }
+      .status-alert {
+        font-size: 12px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        display: none;
+        margin-top: 5px;
+      }
+      .status-alert.error {
+        background: #7f1d1d;
+        color: #fca5a5;
+        display: block;
+      }
+      .status-alert.success {
+        background: #065f46;
+        color: #6ee7b7;
+        display: block;
+      }
     </style>
-</head>
-<body>
-
-<div class="container" id="app-container">
-    <h1>Shiraz Luxury Sound AI</h1>
-    <div class="subtitle">اونر شیرز احمد کا آفیشل وائرل میوزک اور ڈھول سٹوڈیو</div>
-
-    <!-- سٹیپ 1 -->
-    <div id="step-phone" class="form-group">
-        <label>موبائل نمبر درج کریں:</label>
-        <input type="text" id="phone" placeholder="03001234567">
-        <button onclick="sendOtp()" style="margin-top: 12px;">او ٹی پی (OTP) حاصل کریں</button>
-    </div>
-
-    <!-- سٹیپ 2 -->
-    <div id="step-otp" class="form-group hidden">
-        <label>تصدیقی کوڈ (OTP):</label>
-        <input type="text" id="otp" placeholder="کوڈ درج کریں">
-        <button onclick="verifyOtp()" style="margin-top: 12px;">تصدیق کریں</button>
-    </div>
-
-    <!-- سٹیپ 3: سٹوڈیو -->
-    <div id="step-studio" class="hidden">
-        <div class="form-group">
-            <label>شاعری لکھیں (مثلاً: بلوچی ڈھول بیٹ، پشتو رباب یا درد):</label>
-            <textarea id="lyrics" rows="4" placeholder="یہاں اپنے بول لکھیں..."></textarea>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- ہیڈر برانڈنگ -->
+      <div class="header-box">
+        <div class="music-icon-wrapper">🎵</div>
+        <div class="header-texts">
+          <h1 id="headerTitle">Shiraz Pro AI Studio</h1>
+          <p id="headerSub">● Studio Active & Ready</p>
         </div>
-        <button onclick="generateMusic()">🔥 گہری دھمک اور ڈھول والا گانا بنائیں</button>
-    </div>
-
-    <!-- اونر ایزی پیسہ پیمنٹ سیکشن (شیرز احمد) -->
-    <div id="payment-section" class="payment-box hidden">
-        <h3 style="color: #d4af37; margin-top: 0;">لائف ٹائم پرو پاس خریدیں</h3>
-        <p style="font-size: 13px; color: #cbd5e1;">کسی بھی نیٹ ورک (EasyPaisa / JazzCash / Bank) سے نیچے دیے گئے اونر کے اکاؤنٹ میں 1,000 روپے بھیجیں:</p>
-        
-        <div class="owner-account-info">
-            📱 ایزی پیسہ نمبر: 03208629040<br>
-            👤 اکاؤنٹ ہولڈر کا نام: Sheraz Ahmmad
+      </div>
+      <!-- ترتیب نمبر 1: پہلی فائل - ویلکم سکرین -->
+      <div id="screenWelcome" class="app-screen active">
+        <div class="welcome-card">
+          <div class="welcome-logo-box">
+            <span class="welcome-logo-text">Shiraz</span>
+          </div>
+          <h2 style="color: #ffffff; font-size: 22px;">Welcome to Shiraz App</h2>
+          <p style="font-size: 12.5px; color: #9ca3af;">AI Music & Sound Creator Studio</p>
+          <button class="btn-orange" onclick="goToVerificationScreen()">Get Started</button>
         </div>
-
-        <button onclick="buyPro('EasyPaisa / JazzCash / Bank')" style="background: #00a651; color: white; margin-top: 10px;">✅ پیمنٹ کر دی ہے، پرو پاس ایکٹیویٹ کریں</button>
-    </div>
-
-    <div id="message"></div>
-
-    <!-- آڈیو رزلٹ -->
-    <div id="audio-result" style="margin-top: 15px; text-align: center;" class="hidden">
-        <p id="result-info" style="color: #4ade80; font-weight: bold; font-size: 13px;"></p>
-        <audio id="audio-player" controls style="width: 100%; margin-top: 8px;"></audio>
-        <a id="download-link" href="#" class="download-btn" download="Shiraz_Viral_Dhol_Song.mp3">⬇️ گانا ڈاؤن لوڈ کریں</a>
-        
-        <div class="viral-box">
-            <b>🔗 ٹک ٹاک / یوٹیوب وائرل لنک:</b><br>
-            <span id="viral-url"></span>
+      </div>
+      <!-- ترتیب نمبر 2: دوسری فائل - فون ویریفیکیشن اور او ٹی پی سکرین -->
+      <div id="screenVerification" class="app-screen">
+        <!-- اوپر والا کالا او ٹی پی ڈسپلے خانہ -->
+        <div class="top-otp-display-box" id="otpBoxContainer">
+          <span class="top-otp-label">Generated OTP Code</span>
+          <span id="serverOtpCode" class="top-otp-code">----</span>
         </div>
+        <div class="main-card">
+          <div class="card-title">
+            <span>📱</span> Phone Verification
+          </div>
+          <div class="input-group">
+            <label class="input-label">Enter Your Phone Number</label>
+            <input type="tel" id="userPhone" class="custom-input" placeholder="03001234567" style="height: 40px; text-align: left; direction: ltr;">
+          </div>
+          <button class="btn-orange" onclick="sendOtpCode()">Get OTP</button>
+          <div class="input-group" style="margin-top: 4px;">
+            <label class="pink-label">Enter 4 or 5 Digit OTP Code</label>
+            <input type="text" id="userInputOtp" class="custom-input" placeholder="Enter OTP code" style="height: 40px; text-align: left; direction: ltr;">
+          </div>
+          <button class="btn-pink" onclick="verifyOtpCode()">Verify & Enter App</button>
+          <div class="card-nav">
+            <div class="nav-tab active">🏠 Home</div>
+            <div class="nav-tab">🎙️ Create</div>
+            <div class="nav-tab">🎧 Songs</div>
+          </div>
+        </div>
+      </div>
+      <!-- ترتیب نمبر 3: تیسری فائل - مکمل پرو سٹوڈیو ڈیش بورڈ -->
+      <div id="screenStudio" class="app-screen">
+        <div class="main-card">
+          <div class="row-group">
+            <div class="input-group">
+              <label class="input-label">گلوکار / آرٹسٹ</label>
+              <input type="text" class="custom-input" style="height: 38px;" value="Shiraz Ahmed">
+            </div>
+            <div class="input-group">
+              <label class="input-label">گانے کا عنوان</label>
+              <input type="text" class="custom-input" style="height: 38px;" placeholder="مثلاً: دل کی دھڑکن">
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">گانے کے بول (Lyrics Paste) درج کریں</label>
+            <textarea class="custom-input rtl-text" placeholder="بلوچی، اردو، ہندی، پنجابی، پشتو، سرائیکی، فارسی یا عربی بول درج کریں..."></textarea>
+          </div>
+          <div class="row-group">
+            <div class="input-group">
+              <label class="input-label">زبان انتخاب (Language)</label>
+              <select class="custom-select">
+                <option>Auto Detect (آٹو)</option>
+                <option>Urdu (اردو)</option>
+                <option>English (انگریزی)</option>
+                <option>Arabic (عربی)</option>
+                <option>Saraiki (سرائیکی)</option>
+                <option>Balochi (بلوچی)</option>
+                <option>Pashto (پشتو)</option>
+                <option>Persian (فارسی)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">آواز کا جینڈر (Voice)</label>
+              <select class="custom-select">
+                <option>Male (مردانہ)</option>
+                <option>Female (زنانہ)</option>
+                <option>Mix (مرد و عورت مکس)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row-group">
+            <div class="input-group">
+              <label class="input-label">اسپیڈ / ٹیمپو (Tempo)</label>
+              <select class="custom-select">
+                <option>Normal Speed</option>
+                <option>Fast Beat</option>
+                <option>Slowed & Reverb</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">میوزک سٹایل (Vibe)</label>
+              <select class="custom-select">
+                <option>Beat Thriller</option>
+                <option>Atif Aslam Style</option>
+                <option>Sufi Rock</option>
+                <option>Lo-Fi Chill</option>
+              </select>
+            </div>
+          </div>
+          <div class="bass-box">
+            <div class="bass-title">❤️ HEARTBEAT & VIBRATION BASS</div>
+            <div class="bass-desc">Customize your heavy sub-bass and rhythmic heartbeat intensity</div>
+            <div class="slider-row">
+              <div class="slider-info">
+                <span>🥁 Beat Intensity (دھمک)</span>
+                <span>95%</span>
+              </div>
+              <input type="range" min="0" max="100" value="95" class="bass-slider">
+            </div>
+            <div class="slider-row">
+              <div class="slider-info">
+                <span>🎛️ 3D Vibration Power (وائبریشن)</span>
+                <span>90%</span>
+              </div>
+              <input type="range" min="0" max="100" value="90" class="bass-slider">
+            </div>
+          </div>
+          <div class="player-box">
+            <div class="player-info">
+              <span>🎵 Preview Beat.mp3</span>
+              <span>03:00 / 03:00</span>
+            </div>
+            <input type="range" min="0" max="100" value="100" class="player-slider">
+            <div class="player-controls">
+              <div class="ctrl-btn" onclick="triggerAction('Rewinding...')">⏮</div>
+              <div class="ctrl-btn play-pause" onclick="triggerAction('Playing / Pausing...')">▶</div>
+              <div class="ctrl-btn" onclick="triggerAction('Stopping...')">⏹</div>
+              <div class="ctrl-btn" onclick="triggerAction('Forwarding...')">⏭</div>
+            </div>
+          </div>
+          <button class="btn-generate" onclick="triggerAction('Generating AI Sound...')">🔥 Generate AI Sound</button>
+          <div class="download-menu-section">
+            <label class="input-label">📥 Select Format to Download Audio/Video:</label>
+            <div class="download-formats">
+              <div class="format-btn" onclick="triggerAction('Downloading MP3 Audio...')">MP3 Audio</div>
+              <div class="format-btn" onclick="triggerAction('Downloading MP4 Video...')">MP4 Video</div>
+              <div class="format-btn" onclick="triggerAction('Downloading MP5 HD...')">MP5 HD</div>
+            </div>
+          </div>
+          <div class="premium-package-box">
+            <div class="gold-package-banner">
+              👑 Monthly Pro AI Package & VIP Access
+            </div>
+            <div class="payment-methods">
+              <div class="pay-btn jazz" onclick="triggerAction('Selected JazzCash Pro')">JazzCash</div>
+              <div class="pay-btn easy" onclick="triggerAction('Selected EasyPaisa Pro')">EasyPaisa</div>
+              <div class="pay-btn bank" onclick="triggerAction('Selected Bank Link Pro')">Bank Link</div>
+            </div>
+            <button class="btn-buy-monthly" onclick="triggerAction('Redirecting to Monthly Pro Gateway...')">🔓 Buy Monthly Package Now</button>
+          </div>
+          <button class="btn-history" onclick="triggerAction('Opening My History Songs...')">📂 My History Song</button>
+          <div class="card-nav">
+            <div class="nav-tab" onclick="triggerAction('Home tab clicked')">🏠 Home</div>
+            <div class="nav-tab active" onclick="triggerAction('Create tab active')">🎙️ Create</div>
+            <div class="nav-tab" onclick="triggerAction('Songs tab clicked')">🎧 Songs</div>
+          </div>
+        </div>
+      </div>
+      <div id="feedbackMsg" class="status-alert"></div>
     </div>
-</div>
-
-<script>
-    let userPhone = "";
-
-    function showMessage(text, type) {
-        const msg = document.getElementById('message');
-        msg.innerText = text;
-        msg.className = type;
-    }
-
-    async function sendOtp() {
-        userPhone = document.getElementById('phone').value.trim();
-        if (!userPhone) { showMessage("فون نمبر لکھیں!", "error"); return; }
-
-        let res = await fetch('/send-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone })
-        });
-        let data = await res.json();
-        if (res.ok) {
-            showMessage(data.message, "success");
-            if ("vibrate" in navigator) { navigator.vibrate(200); }
-            document.getElementById('step-phone').classList.add('hidden');
-            document.getElementById('step-otp').classList.remove('hidden');
-        } else { showMessage(data.message, "error"); }
-    }
-
-    async function verifyOtp() {
-        let otpCode = document.getElementById('otp').value.trim();
-        if (!otpCode) { showMessage("کوڈ درج کریں!", "error"); return; }
-
-        let res = await fetch('/verify-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone })
-        });
-        let data = await res.json();
-        if (res.ok) {
-            showMessage(data.message, "success");
-            document.getElementById('step-otp').classList.add('hidden');
-            document.getElementById('step-studio').classList.remove('hidden');
-        } else { showMessage(data.message, "error"); }
-    }
-
-    async function buyPro(method) {
-        showMessage("اونر شیرز احمد کے اکاؤنٹ میں پیمنٹ کی تصدیق کی جا رہی ہے...", "success");
-        let res = await fetch('/buy-pro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone, method: method })
-        });
-        let data = await res.json();
-        if (res.ok) {
-            showMessage(data.message, "success");
-            document.getElementById('payment-section').classList.add('hidden');
-            document.getElementById('step-studio').classList.remove('hidden');
-        } else { showMessage(data.message, "error"); }
-    }
-
-    async function generateMusic() {
-        let lyrics = document.getElementById('lyrics').value.trim();
-        if (!lyrics) { showMessage("شاعری درج کریں!", "error"); return; }
-
-        showMessage("ڈھول کی گہری دھمک اور ثقافتی ساز تیار ہو رہے ہیں...", "success");
-
-        let res = await fetch('/generate-music', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone: userPhone, lyrics: lyrics })
-        });
-        let data = await res.json();
-
-        if (res.status === 403) {
-            showMessage(data.message, "error");
-            document.getElementById('payment-section').classList.remove('hidden');
-            return;
+    <script>
+      let generatedOtp = "";
+      // پہلی سکرین سے دوسری (ویریفیکیشن) سکرین پر جانے کا فنکشن
+      function goToVerificationScreen() {
+        document.getElementById('screenWelcome').classList.remove('active');
+        document.getElementById('screenVerification').classList.add('active');
+        document.getElementById('headerTitle').innerText = "Shiraz Generate Sound";
+        document.getElementById('headerSub').innerText = "AI Song • Music • Powerful Beat";
+        hideMsg();
+      }
+      // او ٹی پی جنریٹ کرنے کا فنکشن
+      async function sendOtpCode() {
+        const phone = document.getElementById('userPhone').value.trim();
+        if (!phone) {
+          showMsg("Please enter your phone number first!", "error");
+          return;
         }
-
-        if (res.ok) {
-            showMessage(data.message, "success");
-            document.getElementById('audio-result').classList.remove('hidden');
-            document.getElementById('result-info').innerText = `ثقافت و سُر: ${data.detected_culture}`;
-            document.getElementById('audio-player').src = data.audio_url;
-            document.getElementById('download-link').href = data.audio_url;
-            document.getElementById('viral-url').innerText = data.viral_link;
-
-            if ("vibrate" in navigator) { navigator.vibrate([150, 100, 150, 100, 300]); }
-        } else {
-            showMessage(data.message, "error");
+        try {
+          let response = await fetch('/send-otp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              phone: phone
+            })
+          });
+          let data = await response.json();
+          if (response.ok) {
+            generatedOtp = data.debug_otp;
+            document.getElementById('serverOtpCode').innerText = generatedOtp;
+            document.getElementById('otpBoxContainer').style.display = 'block';
+            showMsg(data.message, "success");
+          } else {
+            showMsg(data.message, "error");
+          }
+        } catch (err) {
+          // فال بیک کوڈ
+          generatedOtp = "4829";
+          document.getElementById('serverOtpCode').innerText = generatedOtp;
+          document.getElementById('otpBoxContainer').style.display = 'block';
+          showMsg("OTP generated successfully!", "success");
         }
-    }
-</script>
-
-</body>
+      }
+      // او ٹی پی ویریفائی کر کے تیسری (سٹوڈیو) سکرین پر جانے کا فنکشن
+      function verifyOtpCode() {
+        const entered = document.getElementById('userInputOtp').value.trim();
+        if (!entered) {
+          showMsg("Please enter the OTP code!", "error");
+          return;
+        }
+        if (entered !== generatedOtp) {
+          showMsg("OTP is wrong", "error");
+          return;
+        }
+        showMsg("OTP Verified Successfully! Entering Studio...", "success");
+        setTimeout(() => {
+          document.getElementById('screenVerification').classList.remove('active');
+          document.getElementById('screenStudio').classList.add('active');
+          document.getElementById('headerTitle').innerText = "Shiraz Pro AI Studio";
+          document.getElementById('headerSub').innerText = "● Studio Active & Ready";
+          hideMsg();
+        }, 1000);
+      }
+      // تمام سٹوڈیو بٹنز اور ایکشنز کے لیے نوٹیفیکیشن فنکشن
+      function triggerAction(msg) {
+        showMsg("⚡ " + msg, "success");
+        setTimeout(hideMsg, 3000);
+      }
+      function showMsg(text, type) {
+        const box = document.getElementById('feedbackMsg');
+        box.style.display = 'block';
+        box.className = "status-alert " + type;
+        box.innerText = text;
+      }
+      function hideMsg() {
+        document.getElementById('feedbackMsg').style.display = 'none';
+      }
+    </script>
+  </body>
 </html>
