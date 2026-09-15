@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیرز پرو اے آئی اس튜디오 - پروفیشنل میوزک</title>
+    <title>شیرز پرو اے آئی اس튜디오 - Suno/Udio پروڈکشن</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #090d16, #1e1b4b);
+            background: linear-gradient(135deg, #030712, #1e1b4b);
             color: #f8fafc;
             margin: 0;
             padding: 20px;
@@ -16,14 +16,14 @@
             align-items: center;
             min-height: 100vh;
         }
-        .studio-box {
-            background: rgba(30, 27, 75, 0.85);
-            border: 1px solid #4338ca;
+        .studio-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #4f46e5;
             border-radius: 20px;
             padding: 30px;
             width: 100%;
             max-width: 650px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
         }
         h1 {
             text-align: center;
@@ -33,12 +33,12 @@
         }
         .subtitle {
             text-align: center;
-            color: #c7d2fe;
+            color: #94a3b8;
             font-size: 14px;
             margin-bottom: 25px;
         }
         .badge {
-            background: linear-gradient(45deg, #6366f1, #4f46e5);
+            background: linear-gradient(45deg, #6366f1, #9333ea);
             color: white;
             padding: 6px 16px;
             border-radius: 20px;
@@ -51,7 +51,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #e2e8f0;
+            color: #cbd5e1;
         }
         textarea, select {
             width: 100%;
@@ -72,68 +72,76 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            background: linear-gradient(45deg, #4f46e5, #9333ea);
+            background: linear-gradient(45deg, #4f46e5, #ec4899);
             color: white;
             transition: 0.3s;
             margin-bottom: 15px;
         }
-        button:hover { opacity: 0.9; }
-        .output-section {
+        button:hover { opacity: 0.95; }
+        .output-box {
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.6;
         }
         audio {
             width: 100%;
             margin-top: 10px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-<div class="studio-box">
+<div class="studio-card">
     <div style="text-align: center;">
-        <span class="badge">🔥 جنید سراج & جنید ساؤنڈ - پرو اے آئی اسٹوڈیو</span>
+        <span class="badge">✨ جنید سراج & جنید ساؤنڈ - پرو اے آئی اسٹوڈیو</span>
     </div>
-    <h1>شیرز پرو اے آئی اسٹوڈیو</h1>
-    <div class="subtitle">اصل سازوں اور ترنم کے ساتھ اے آئی گانا اور لیرکس جنریٹر</div>
+    <h1>شیرز پرو اے آئی اس튜디오</h1>
+    <div class="subtitle">Suno & Udio سٹائل پروڈکشن - اصل سازوں اور دھن کے ساتھ</div>
 
-    <label for="songPrompt">گانے یا شاعری کا موضوع (Prompt):</label>
-    <textarea id="songPrompt" rows="3" placeholder="موضوع لکھیں، مثلاً: محبت پر ایک شاندار اور دل کو چھو لینے والا گانا..."></textarea>
+    <label for="promptInput">گانے کا موضوع یا پراپمٹ (Prompt):</label>
+    <textarea id="promptInput" rows="3" placeholder="یہاں لکھیں، مثلاً: محبت پر ایک شاندار اور دلکش ترانہ..."></textarea>
 
-    <label for="musicMood">میوزک اور وائس موڈ (Music & Voice Style):</label>
-    <select id="musicMood">
+    <label for="moodSelect">میوزک موڈ اور اسٹوڈیو سٹائل:</label>
+    <select id="moodSelect">
         <option value="poetic">📜 شعر و شاعری کا کلاسیکل ترنم</option>
         <option value="sad">🌧️ اداس اور دلگیر دھن (Sad Melody)</option>
         <option value="energetic">🔥 جوشیلہ اور ریتھمک گانا (Energetic Beat)</option>
     </select>
 
-    <button onclick="generateProMusic()">🎵 پرو اے آئی گانا اور ساز جنریٹ کریں</button>
+    <button onclick="generateSunoStyleMusic()">🎵 پرو اے آئی میوزک اور گانا جنریٹ کریں</button>
 
-    <div class="output-section">
-        <label>تیمار شدہ لیرکس:</label>
-        <div id="resultLyrics" style="color: #cbd5e1; white-space: pre-wrap; margin-bottom: 10px; font-size: 15px;">گانا جنریٹ ہونے کے بعد یہاں ظاہر ہوگا...</div>
-        
-        <label>اصل سازوں کے ساتھ آڈیو پلیئر:</label>
-        <audio id="audioPlayer" controls style="display:none;"></audio>
+    <div class="output-box">
+        <label style="color: #38bdf8; margin-bottom: 5px;">جنریٹ شدہ لیرکس:</label>
+        <div id="lyricsResult">گانا تیار ہونے کے بعد لیرکس یہاں ظاہر ہوں گے...</div>
+    </div>
+
+    <div class="output-box" id="audioSection" style="display:none;">
+        <label style="color: #34d399; margin-bottom: 5px;">اصل سازوں کے ساتھ آڈیو ٹریک:</label>
+        <audio id="proAudioPlayer" controls></audio>
     </div>
 </div>
 
 <script>
-    async function generateProMusic() {
-        let prompt = document.getElementById("songPrompt").value.trim();
-        let mood = document.getElementById("musicMood").value;
-        let lyricsBox = document.getElementById("resultLyrics");
-        let audioPlayer = document.getElementById("audioPlayer");
+    async function generateSunoStyleMusic() {
+        let prompt = document.getElementById("promptInput").value.trim();
+        let mood = document.getElementById("moodSelect").value;
+        let lyricsResult = document.getElementById("lyricsResult");
+        let audioSection = document.getElementById("audioSection");
+        let audioPlayer = document.getElementById("proAudioPlayer");
 
         if (prompt === "") {
             alert("براہ کرم پہلے گانے کا موضوع درج کریں!");
             return;
         }
 
-        lyricsBox.innerText = "اے آئی اسٹوڈیو ساز اور لیرکس تیار کر رہا ہے، براہ کرم انتظار کریں...";
+        lyricsResult.innerText = "اے آئی اسٹوڈیو ساز، دھن اور لیرکس تیار کر رہا ہے، براہ کرم انتظار کریں...";
 
         try {
             let response = await fetch('/api/generate-pro-music', {
@@ -144,12 +152,12 @@
 
             let data = await response.json();
             if (data.success) {
-                lyricsBox.innerText = data.lyrics;
+                lyricsResult.innerText = data.lyrics;
                 audioPlayer.src = data.audio_url;
-                audioPlayer.style.display = "block";
+                audioSection.style.display = "block";
                 audioPlayer.play();
             } else {
-                alert("جنریشن میں خرابی پیش آئی۔");
+                alert("میوزک جنریشن میں خرابی پیش آئی۔");
             }
         } catch (error) {
             console.error(error);
@@ -159,4 +167,5 @@
 </script>
 
 </body>
-</html>
+                                                                                                                 </html>
+
