@@ -1,54 +1,6 @@
-<script>
-// یہ فنکشن عام روبوٹس کی طرح نہیں بلکہ ایک لے، سر اور ترنم کے انداز میں لیرکس کو پڑھے گا
-function singLyricalText(fullLyrics) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // پہلے سے چل رہی آواز کو بند کریں
+<button onclick="playStudioSong()" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 12px 25px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">
+    🎵 جنید سراج اسٹوڈیو: لیرکس سنیں (سر کے ساتھ)
+</button>
 
-        // لیرکس کو لائن بائے لائن یا جملوں میں توڑ لیں تاکہ لے برقرار رہے
-        let lines = fullLyrics.split('\n');
-        let index = 0;
-
-        function speakNextLine() {
-            if (index < lines.length) {
-                let currentLine = lines[index].trim();
-                if (currentLine === "") {
-                    index++;
-                    speakNextLine();
-                    return;
-                }
-
-                let utterance = new SpeechSynthesisUtterance(currentLine);
-                utterance.lang = 'ur-PK'; // اردو زبان
-                utterance.rate = 0.9;     // ہلکا سا دھیما رفتار تاکہ سر اور انداز واضح ہو
-                utterance.pitch = 1.2;    // پچ تھوڑی اونچی تاکہ گیت یا ترنم کا احساس ہو
-                utterance.volume = 1.0;   // پوری آواز
-
-                // جب ایک لائن بول چکیں تو اگلی لائن پر جانے سے پہلے ہلکا سا وقفہ (تھام) دیں
-                utterance.onend = function () {
-                    index++;
-                    setTimeout(speakNextLine, 400); // 400 ملی سیکنڈ کا وقفہ شعر کے انداز کے لیے
-                };
-
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        speakNextLine();
-    } else {
-        alert("معذرت، آپ کا براؤزر اس اسپیچ فیچر کو سپورٹ نہیں کرتا۔");
-    }
-}
-
-// جب یوزر 'گانا سناؤ' یا 'لیرکس پڑھو' والے بٹن پر کلک کرے تو یہ چلے گا:
-function playStudioSong() {
-    let mySongLyrics = `
-جنید سراج اسٹوڈیو کی یہ شان ہے،
-ہر ایک دل میں اب نیا گمان ہے۔
-ساز بھی سجے ہیں اور آواز بھی،
-یہ تو محبت کا نیا جہان ہے۔
-    `;
-    singLyricalText(mySongLyrics);
-}
-</script>
 
           
