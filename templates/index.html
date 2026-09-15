@@ -1,6 +1,284 @@
-<button onclick="playStudioSong()" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; padding: 12px 25px; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">
-    🎵 جنید سراج اسٹوڈیو: لیرکس سنیں (سر کے ساتھ)
-</button>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شیرز پرو اے آئی اس튜디오 (Shiraz Pro AI Studio)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .studio-container {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .pro-badge {
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #cbd5e1;
+        }
+        textarea, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+            font-size: 15px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        textarea:focus, select:focus {
+            border-color: #38bdf8;
+            outline: none;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-primary {
+            background: #0284c7;
+            color: white;
+        }
+        .btn-primary:hover { background: #0369a1; }
+        
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+        .btn-success:hover { background: #15803d; }
+
+        .btn-secondary {
+            background: #475569;
+            color: white;
+        }
+        .btn-secondary:hover { background: #334155; }
+
+        .output-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .counter-box {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #94a3b8;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="studio-container">
+    <div style="text-align: center;">
+        <span class="pro-badge">✨ جنید سراج / جنید ساؤنڈ - پروٹوپ</span>
+    </div>
+    <h1>شیرز پرو اے آئی اس튜디오</h1>
+    <div class="subtitle">لیرکس جنریٹر، وائس موড اور ترنم کے ساتھ پرو سٹوڈیو</div>
+
+    <!-- فیچر 1: لیرکس جنریٹر پرامپٹ باکس -->
+    <label for="promptInput">1. اے آئی لیرکس پرامپٹ (موضوع لکھیں):</label>
+    <textarea id="promptInput" rows="3" placeholder="موضوع لکھیں، مثلاً: محبت پر ایک اداس گانا یا دوستی کی شاعری..."></textarea>
+
+    <button class="btn-primary" onclick="generateAiLyrics()" style="width: 100%; margin-bottom: 20px;">🤖 اے آئی سے لیرکس تیار کریں</button>
+
+    <!-- فیچر 2: وائس موڈ / سٹائل سلیکٹر -->
+    <label for="moodSelect">2. وائس موڈ اور انداز (Voice Style):</label>
+    <select id="moodSelect">
+        <option value="sad">🌧️ اداس اور دھیما انداز (Sad & Slow)</option>
+        <option value="energetic">🔥 جوش اور توانائی والا انداز (Energetic)</option>
+        <option value="poetic">📜 شعر و شاعری کا ترنم (Poetic Recitation)</option>
+    </select>
+
+    <label for="lyricsOutput">3. تیار شدہ لیرکس / آؤٹ پٹ:</label>
+    <div id="lyricsOutput" class="output-box">لیرکس یہاں ظاہر ہوں گے...</div>
+
+    <!-- فیچر 3: سنیں، کاپی کریں اور ڈاؤن لوڈ کریں -->
+    <div class="btn-group">
+        <button class="btn-success" onclick="playLyricalVoice()">🎵 سر کے ساتھ سنیں</button>
+        <button class="btn-secondary" onclick="copyLyrics()">📋 کاپی کریں</button>
+        <button class="btn-secondary" onclick="downloadLyrics()">📥 ڈاؤن لوڈ</button>
+    </div>
+
+    <!-- فیچر 4: پرو سٹوڈیو کریڈٹ کاؤنٹر -->
+    <div class="counter-box">
+        <span>پرو سٹوڈیو اسٹیٹس: <strong style="color: #38bdf8;">آن لائن (Live)</strong></span>
+        <span>باقی کریڈٹس: <strong id="creditCount" style="color: #f59e0b;">5 / 5</strong></span>
+    </div>
+</div>
+
+<script>
+    let remainingCredits = 5;
+
+    // فیچر 1: لیرکس جنریٹر فنکشن
+    function generateAiLyrics() {
+        let topic = document.getElementById("promptInput").value.trim();
+        let mood = document.getElementById("moodSelect").value;
+        let outputBox = document.getElementById("lyricsOutput");
+
+        if (topic === "") {
+            alert("براہ کرم پہلے کوئی موضوع یا پراپمٹ درج کریں!");
+            return;
+        }
+
+        if (remainingCredits <= 0) {
+            alert("آپ کے مفت کریڈٹس ختم ہو چکے ہیں!");
+            return;
+        }
+
+        // موضوع کی بنیاد پر اے آئی لیرکس جنریشن
+        let generatedText = "";
+        if (mood === "sad") {
+            generatedText = `(اداس انداز - سست لے)\nموضوع: ${topic}\n\nدل کی گہرائی میں اک درد چھپا ہے آج بھی،\nتیری یادوں کا کوئی سلسلہ ہے آج بھی۔\nتنہایی کی راتوں میں تیری آواز گونجے،\nبکھرے ہوئے خوابوں کا قافلہ ہے آج بھی۔`;
+        } else if (mood === "energetic") {
+            generatedText = `(جوش والا انداز - تیز لے)\nموضوع: ${topic}\n\nحوصلہ بلند ہے منزل کی طرف قدم،\nرکنا نہیں کبھی بھی چاہے ہو کتنے غم۔\nجیند سراج کی یہ دھن مچائے گی دھمال،\nہم نے تو بدل دینا اب سارا یہ نظام!`;
+        } else {
+            generatedText = `(شعر و شاعری کا ترنم)\nموضوع: ${topic}\n\nمحبت کی فضاؤں میں نیا سا اک اثر ہے،\nہر ایک دل کی دھڑکن میں ترا ہی اب ذکر ہے۔\nساز بھی سجے ہیں اور آواز بھی حسیں،\nیہ جنید ساؤنڈ اسٹوڈیو کا سارا سفر ہے۔`;
+        }
+
+        outputBox.innerText = generatedText;
+
+        // کریڈٹ کم کریں
+        remainingCredits--;
+        document.getElementById("creditCount").innerText = remainingCredits + " / 5";
+    }
+
+    // فیچر 2 اور 3: ترنم اور سر کے ساتھ بولنے والا اسپیچ انجن
+    function playLyricalVoice() {
+        let textToSpeak = document.getElementById("lyricsOutput").innerText;
+        let mood = document.getElementById("moodSelect").value;
+
+        if (textToSpeak === "" || textToSpeak.includes("لیرکس یہاں ظاہر ہوں گے")) {
+            alert("سنانے کے لیے کوئی لیرکس موجود نہیں ہیں!");
+            return;
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // پرانی آواز بند کریں
+
+            let lines = textToSpeak.split('\n');
+            let index = 0;
+
+            function speakLine() {
+                if (index < lines.length) {
+                    let line = lines[index].trim();
+                    if (line === "") {
+                        index++;
+                        speakLine();
+                        return;
+                    }
+
+                    let utterance = new SpeechSynthesisUtterance(line);
+                    utterance.lang = 'ur-PK';
+
+                    // موڈ کے حساب سے پچ اور رفتار (Rate & Pitch) سیٹ کرنا
+                    if (mood === "sad") {
+                        utterance.rate = 0.8;  // دھیمی رفتار
+                        utterance.pitch = 0.9; // مدہم پچ
+                    } else if (mood === "energetic") {
+                        utterance.rate = 1.1;  // تیز رفتار
+                        utterance.pitch = 1.3; // اونچی پچ
+                    } else {
+                        utterance.rate = 0.9;  // ترنم والا انداز
+                        utterance.pitch = 1.2;
+                    }
+
+                    utterance.onend = function() {
+                        index++;
+                        setTimeout(speakLine, 350); // مصرعوں کے درمیان خوبصورت وقفہ
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
+
+            speakLine();
+        } else {
+            alert("معذرت، آپ کا براؤزر اسپیچ کو سپورٹ نہیں کرتا۔");
+        }
+    }
+
+    // فیچر 3: کاپی فنکشن
+    function copyLyrics() {
+        let text = document.getElementById("lyricsOutput").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("لیرکس کامیابی سے کاپی ہو گئے ہیں!");
+        });
+    }
+
+    // فیچر 3: ڈاؤن لوڈ فنکشن (Text File)
+    function downloadLyrics() {
+        let text = document.getElementById("lyricsOutput").innerText;
+        let blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        let link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Shiraz_AI_Studio_Lyrics.txt';
+        link.click();
+    }
+</script>
+
+</body>
+</html>
+
 
 
           
