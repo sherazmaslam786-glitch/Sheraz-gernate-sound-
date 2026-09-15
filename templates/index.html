@@ -1,24 +1,54 @@
-// یہ فنکشن کسی بھی ٹیکسٹ کو لے کر اسے فورا آواز میں بولے گا (Text-to-Speech Engine)
-function speakText(textToSpeak) {
+<script>
+// یہ فنکشن عام روبوٹس کی طرح نہیں بلکہ ایک لے، سر اور ترنم کے انداز میں لیرکس کو پڑھے گا
+function singLyricalText(fullLyrics) {
     if ('speechSynthesis' in window) {
-        // پرانی کوئی آواز اگر چل رہی ہو تو اسے روک دیں
-        window.speechSynthesis.cancel();
+        window.speechSynthesis.cancel(); // پہلے سے چل رہی آواز کو بند کریں
 
-        let utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'ur-PK'; // اردو زبان کے لیے (اگر انگلینڈ یا دوسری ہو تو en-US بھی کر سکتے ہیں)
-        utterance.rate = 1.0;     // بولنے کی رفتار
-        utterance.pitch = 1.0;    وائس پچ
+        // لیرکس کو لائن بائے لائن یا جملوں میں توڑ لیں تاکہ لے برقرار رہے
+        let lines = fullLyrics.split('\n');
+        let index = 0;
 
-        window.speechSynthesis.speak(utterance);
+        function speakNextLine() {
+            if (index < lines.length) {
+                let currentLine = lines[index].trim();
+                if (currentLine === "") {
+                    index++;
+                    speakNextLine();
+                    return;
+                }
+
+                let utterance = new SpeechSynthesisUtterance(currentLine);
+                utterance.lang = 'ur-PK'; // اردو زبان
+                utterance.rate = 0.9;     // ہلکا سا دھیما رفتار تاکہ سر اور انداز واضح ہو
+                utterance.pitch = 1.2;    // پچ تھوڑی اونچی تاکہ گیت یا ترنم کا احساس ہو
+                utterance.volume = 1.0;   // پوری آواز
+
+                // جب ایک لائن بول چکیں تو اگلی لائن پر جانے سے پہلے ہلکا سا وقفہ (تھام) دیں
+                utterance.onend = function () {
+                    index++;
+                    setTimeout(speakNextLine, 400); // 400 ملی سیکنڈ کا وقفہ شعر کے انداز کے لیے
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        speakNextLine();
     } else {
-        alert("معذرت، آپ کا براؤزر اسپیچ (Speech) کو سپورٹ نہیں کرتا۔");
+        alert("معذرت، آپ کا براؤزر اس اسپیچ فیچر کو سپورٹ نہیں کرتا۔");
     }
 }
 
-// مثال کے طور پر جب کوئی یوزر گانا یا ٹیکسٹ پلے کرے تو یہ فنکشن کال کریں:
-function playSongOrText() {
-    let userText = "جنید سراج اور جنید ساؤنڈ اسٹوڈیو میں خوش آمدید۔ آپ کا گانا تیار ہے۔";
-    speakText(userText);
+// جب یوزر 'گانا سناؤ' یا 'لیرکس پڑھو' والے بٹن پر کلک کرے تو یہ چلے گا:
+function playStudioSong() {
+    let mySongLyrics = `
+جنید سراج اسٹوڈیو کی یہ شان ہے،
+ہر ایک دل میں اب نیا گمان ہے۔
+ساز بھی سجے ہیں اور آواز بھی،
+یہ تو محبت کا نیا جہان ہے۔
+    `;
+    singLyricalText(mySongLyrics);
 }
+</script>
 
           
