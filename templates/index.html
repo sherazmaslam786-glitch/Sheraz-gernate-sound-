@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیرز پرو اے آئی اس튜디오 - Shiraz Pro AI Studio</title>
+    <title>شیرز پرو اے آئی اس튜디오 - سونو سٹائل میوزک جنریٹر</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #090d16, #1e1b4b);
+            background: linear-gradient(135deg, #030712, #1e1b4b);
             color: #f8fafc;
             margin: 0;
             padding: 20px;
@@ -22,8 +22,8 @@
             border-radius: 20px;
             padding: 30px;
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
         h1 {
             text-align: center;
@@ -38,7 +38,7 @@
             margin-bottom: 20px;
         }
         .badge {
-            background: linear-gradient(45deg, #6366f1, #9333ea);
+            background: linear-gradient(45deg, #6366f1, #ec4899);
             color: white;
             padding: 5px 15px;
             border-radius: 20px;
@@ -64,236 +64,104 @@
             margin-bottom: 15px;
             box-sizing: border-box;
         }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
         button {
-            flex: 1;
-            padding: 12px;
+            width: 100%;
+            padding: 14px;
             border: none;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            background: linear-gradient(45deg, #4f46e5, #9333ea);
+            color: white;
             transition: 0.3s;
+            margin-bottom: 15px;
         }
-        .btn-primary { background: #4f46e5; color: white; }
-        .btn-primary:hover { background: #4338ca; }
-        .btn-success { background: #16a34a; color: white; }
-        .btn-success:hover { background: #15803d; }
-        .btn-secondary { background: #475569; color: white; }
-        .btn-secondary:hover { background: #334155; }
-
-        .output-box {
+        button:hover { opacity: 0.9; }
+        .output-section {
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 10px;
             padding: 15px;
-            min-height: 100px;
-            max-height: 180px;
-            overflow-y: auto;
-            color: #e2e8f0;
-            white-space: pre-wrap;
-            font-size: 15px;
-            line-height: 1.6;
             margin-bottom: 15px;
         }
-        .auth-section {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px dashed #64748b;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 8px;
         }
     </style>
-
-    <!-- فائر بیس (Firebase SDK) کی لائبریریاں -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
 <div class="studio-card">
     <div style="text-align: center;">
-        <span class="badge">✨ شیراز جنریٹ ساؤنڈ - پرو اسٹوڈیو</span>
+        <span class="badge">✨ شیراز جنریٹ ساؤنڈ - پرو اے آئی اسٹوڈیو</span>
     </div>
     <h1>شیرز پرو اے آئی اس튜디오</h1>
-    <div class="subtitle">فائر بیس او ٹی پی اور ترنم کے ساتھ لیریکل اسپیچ انجن</div>
+    <div class="subtitle">چیٹ جی پی ٹی کے اردو لیرکس سے اصلی سازوں والا گانا تیار کریں</div>
 
-    <!-- فائر بیس فون او ٹی پی سیکشن -->
-    <div class="auth-section">
-        <label for="phoneInput">📱 فائر بیس فون نمبر (ساتھ کنٹری کوڈ لکھیں مثلاً +92):</label>
-        <div class="btn-group" style="margin-bottom: 10px;">
-            <input type="text" id="phoneInput" placeholder="+923XXXXXXXXX" style="margin-bottom:0;">
-            <button class="btn-primary" onclick="sendOtpCode()" style="flex: 0.6;">او ٹی پی بھیجیں</button>
-        </div>
+    <label for="chatGptLyrics">📝 چیٹ جی پی ٹی سے کاپی کیا ہوا اردو گانا یہاں پیسٹ کریں:</label>
+    <textarea id="chatGptLyrics" rows="4" placeholder="یہاں اپنا اردو گانا یا شاعری پیسٹ کریں..."></textarea>
 
-        <div id="otpBox" style="display:none; margin-top: 10px;">
-            <label for="otpInput">🔑 ایس ایم ایس میں موصول ہونے والا کوڈ (OTP):</label>
-            <div class="btn-group" style="margin-bottom: 0;">
-                <input type="text" id="otpInput" placeholder="6 ہندسوں کا کوڈ لکھیں" style="margin-bottom:0;">
-                <button class="btn-success" onclick="verifyOtpCode()" style="flex: 0.6;">تصدیق کریں</button>
-            </div>
-        </div>
-        <div id="recaptcha-container"></div>
-    </div>
-
-    <label for="lyricsInput">🎵 لیرکس یا شاعری درج کریں:</label>
-    <textarea id="lyricsInput" rows="3" placeholder="یہاں اپنا گانا یا شاعری لکھیں..."></textarea>
-
-    <label for="moodSelect">🎨 وائس موڈ اور انداز:</label>
-    <select id="moodSelect">
+    <label for="musicMood">🎵 میوزک اور وائس موڈ (Music Style):</label>
+    <select id="musicMood">
         <option value="poetic">📜 شعر و شاعری کا کلاسیکل ترنم</option>
-        <option value="sad">🌧️ اداس اور دھیما انداز (Sad & Slow)</option>
-        <option value="energetic">🔥 جوش اور توانائی والا انداز (Energetic)</option>
+        <option value="sad">🌧️ اداس اور دلگیر دھن (Sad Melody)</option>
+        <option value="energetic">🔥 جوشیلہ اور ریتھمک گانا (Energetic Beat)</option>
     </select>
 
-    <div class="btn-group">
-        <button class="btn-success" onclick="playLyricalRecitation()">🎵 ترنم کے ساتھ سنیں</button>
-        <button class="btn-secondary" onclick="copyText()">📋 کاپی</button>
-        <button class="btn-secondary" onclick="downloadText()">📥 ڈاؤن لوڈ</button>
-    </div>
+    <button onclick="generateSongFromLyrics()">🎶 اصل سازوں اور میوزک کے ساتھ گانا جنریٹ کریں</button>
 
-    <label>🎧 اسٹوڈیو آؤٹ پٹ:</label>
-    <div id="studioOutput" class="output-box">جنید سراج اسٹوڈیو تیار ہے...</div>
+    <div class="output-section">
+        <label style="color: #38bdf8;">ترتیب شدہ لیرکس:</label>
+        <div id="resultLyrics" style="color: #cbd5e1; white-space: pre-wrap; font-size: 15px; margin-bottom: 10px;">گانا جنریٹ ہونے کے بعد یہاں لیرکس آئیں گے...</div>
+        
+        <label style="color: #34d399;">🎧 اصلی سازوں والا آڈیو پلیئر (گانا سنیں):</label>
+        <audio id="audioPlayer" controls style="display:none;"></audio>
+    </div>
 </div>
 
 <script>
-    // فائر بیس کنفیگریشن (یہاں آپ اپنی فائر بیس پروجیکٹ کی تفصیلات درج کریں گے)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDummyKey-ReplaceWithYourFirebaseKey",
-        authDomain: "shiraz-pro-studio.firebaseapp.com",
-        projectId: "shiraz-pro-studio",
-        storageBucket: "shiraz-pro-studio.appspot.com",
-        messagingSenderId: "1234567890",
-        appId: "1:1234567890:web:abcdef"
-    };
+    async function generateSongFromLyrics() {
+        let lyrics = document.getElementById("chatGptLyrics").value.trim();
+        let mood = document.getElementById("musicMood").value;
+        let resultLyrics = document.getElementById("resultLyrics");
+        let audioPlayer = document.getElementById("audioPlayer");
 
-    // فائر بیس انیشلائزیشن
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-
-    // ری کیپچا اور او ٹی پی ویری ایبل
-    window.onload = function() {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-            'size': 'invisible'
-        });
-    };
-
-    function sendOtpCode() {
-        let phoneNumber = document.getElementById("phoneInput").value.trim();
-        if (phoneNumber === "") {
-            alert("براہ کرم درست فون نمبر درج کریں!");
+        if (lyrics === "") {
+            alert("براہ کرم پہلے چیٹ جی پی ٹی سے کاپی کیا ہوا گانا یہاں پیسٹ کریں!");
             return;
         }
 
-        let appVerifier = window.recaptchaVerifier;
-        firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-            .then(function (confirmationResult) {
-                window.confirmationResult = confirmationResult;
-                document.getElementById("otpBox").style.display = "block";
-                alert("او ٹی پی (OTP) کوڈ آپ کے موبائل نمبر پر بھیج دیا گیا ہے!");
-            }).catch(function (error) {
-                console.error(error);
-                alert("او ٹی پی بھیجنے میں خرابی: " + error.message);
+        resultLyrics.innerText = "اے آئی اسٹوڈیو آپ کے اردو لیرکس پر دھن اور ساز تیار کر رہا ہے، براہ کرم انتظار کریں...";
+
+        try {
+            let response = await fetch('/api/generate-pro-music', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lyrics: lyrics, mood: mood })
             });
-    }
 
-    function verifyOtpCode() {
-        let code = document.getElementById("otpInput").value.trim();
-        if (code === "") {
-            alert("براہ کرم موصول ہونے والا او ٹی پی کوڈ درج کریں!");
-            return;
-        }
-
-        window.confirmationResult.confirm(code).then(function (result) {
-            let user = result.user;
-            alert("مبارک ہو! فون نمبر فائر بیس پر کامیابی سے وریفائی اور لاگ ان ہو گیا ہے!");
-            document.getElementById("otpBox").style.display = "none";
-        }).catch(function (error) {
-            alert("کوڈ درست نہیں ہے یا منسوخ ہو گیا ہے۔");
-        });
-    }
-
-    // لیریکل اسپیچ انجن (ترنم والا ریڈی ٹیشن)
-    function playLyricalRecitation() {
-        let text = document.getElementById("lyricsInput").value.trim();
-        let mood = document.getElementById("moodSelect").value;
-        let outputBox = document.getElementById("studioOutput");
-
-        if (text === "") {
-            alert("براہ کرم پہلے کچھ لیرکس یا شاعری لکھیں!");
-            return;
-        }
-
-        outputBox.innerText = text;
-
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-
-            let lines = text.split('\n');
-            let index = 0;
-
-            function speakLine() {
-                if (index < lines.length) {
-                    let line = lines[index].trim();
-                    if (line === "") {
-                        index++;
-                        speakLine();
-                        return;
-                    }
-
-                    let utterance = new SpeechSynthesisUtterance(line);
-                    utterance.lang = 'ur-PK';
-
-                    if (mood === "sad") {
-                        utterance.rate = 0.8;
-                        utterance.pitch = 0.9;
-                    } else if (mood === "energetic") {
-                        utterance.rate = 1.1;
-                        utterance.pitch = 1.3;
-                    } else {
-                        utterance.rate = 0.9;
-                        utterance.pitch = 1.2;
-                    }
-
-                    utterance.onend = function() {
-                        index++;
-                        setTimeout(speakLine, 400);
-                    };
-
-                    window.speechSynthesis.speak(utterance);
-                }
+            let data = await response.json();
+            if (data.success) {
+                resultLyrics.innerText = data.lyrics;
+                audioPlayer.src = data.audio_url;
+                audioPlayer.style.display = "block";
+                audioPlayer.play();
+            } else {
+                alert("جنریشن میں خرابی پیش آئی۔");
             }
-
-            speakLine();
-        } else {
-            alert("معذرت، آپ کا براؤزر اسپیچ کو سپورٹ نہیں کرتا۔");
+        } catch (error) {
+            console.error(error);
+            alert("سرور سے رابطہ قائم نہیں ہو سکا۔");
         }
-    }
-
-    function copyText() {
-        let text = document.getElementById("lyricsInput").value;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("لیرکس کاپی ہو گئے ہیں!");
-        });
-    }
-
-    function downloadText() {
-        let text = document.getElementById("lyricsInput").value;
-        let blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-        let link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'Shiraz_AI_Studio_Lyrics.txt';
-        link.click();
     }
 </script>
 
 </body>
 </html>
+
 
 
             
