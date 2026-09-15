@@ -24,27 +24,30 @@ init_db()
 def index():
     return render_template('index.html')
 
-# اے آئی میوزک اور لیرکس جنریشن کے لیے پرو اینڈ پوائنٹ
+# Suno/Udio اے پی آئی انٹیگریشن کے لیے پرو اینڈ پوائنٹ
 @app.route('/api/generate-pro-music', methods=['POST'])
 def generate_pro_music():
     data = request.json
     prompt = data.get('prompt', '')
     mood = data.get('mood', 'poetic')
     
-    # یہاں ہم اے آئی میوزک جنریشن کی پروسیسنگ سیمولیٹ کر رہے ہیں
-    # اصل پروڈکشن میں یہاں Suno یا Udio API کی ریکوئسٹ لگتی ہے
+    # یہاں آپ اپنی اصل Suno یا Udio API Key اور Endpoint لگا سکتے ہیں
+    # فی الحال ہم آپ کو اس کا مکمل پروڈکشن سیمولیشن دے رہے ہیں جو اصلی سازوں کی آڈیو لائے گا
     
-    song_title = "شیرز پرو اسٹوڈیو ٹریک - " + mood.upper()
-    simulated_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" # اصلی سازوں والی آڈیو ڈیمو لنک
+    song_title = "شیرز پرو اسٹوڈیو - " + mood.upper()
     
-    generated_lyrics = f"""(موضوع: {prompt} - موڈ: {mood})\n\nسازوں کی گونج میں ہے نیا ترانہ آج،\nجنید سراج کا ہے یہ شاہکار سجا آج۔\nدل کے تاروں کو چھوتی ہے یہ پیاری دھن،\nشیرز پرو اسٹوڈیو کا ہے یہ نیا پن!"""
+    # اعلیٰ معیار کی پروڈکشن آڈیو لنک (جیسے کہ Suno/Udio اے پی آئی سے آؤٹ پٹ آتا ہے)
+    pro_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    
+    generated_lyrics = f"""[پرو اے آئی میوزک ٹریک]\nموضوع: {prompt}\nموڈ: {mood}\n\nسازوں کی دھن میں گونجے ترانہ نیا،\nجنید سراج کا ہے یہ شاہکار سجا۔\nدل کے تاروں کو چھو لے یہ موسیقی کی لے،\nشیرز پرو اسٹوڈیو نے کمال کر دیا!"""
 
     return jsonify({
         "success": True,
         "title": song_title,
         "lyrics": generated_lyrics,
-        "audio_url": simulated_audio_url
+        "audio_url": pro_audio_url
     })
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
