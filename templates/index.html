@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیرز پرو اے آئی اس튜디오 - سونو سٹائل میوزک جنریٹر</title>
+    <title>شیرز پرو اے آئی اس튜디오 - لیریکل سنگنگ انجن</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,7 +53,7 @@
             font-weight: bold;
             color: #cbd5e1;
         }
-        textarea, select, input {
+        textarea, select {
             width: 100%;
             padding: 12px;
             border-radius: 10px;
@@ -64,20 +64,26 @@
             margin-bottom: 15px;
             box-sizing: border-box;
         }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
         button {
-            width: 100%;
+            flex: 1;
             padding: 14px;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            background: linear-gradient(45deg, #4f46e5, #9333ea);
-            color: white;
             transition: 0.3s;
-            margin-bottom: 15px;
         }
-        button:hover { opacity: 0.9; }
+        .btn-primary { background: linear-gradient(45deg, #4f46e5, #9333ea); color: white; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-stop { background: #dc2626; color: white; }
+        .btn-stop:hover { background: #b91c1c; }
+
         .output-section {
             background: #0f172a;
             border: 1px solid #334155;
@@ -85,10 +91,23 @@
             padding: 15px;
             margin-bottom: 15px;
         }
-        audio {
-            width: 100%;
-            margin-top: 10px;
+        .lyrics-display {
+            color: #38bdf8;
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 1.8;
+            min-height: 120px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 8px;
+        }
+        .highlight {
+            background: #4f46e5;
+            color: #ffffff;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -96,72 +115,102 @@
 
 <div class="studio-card">
     <div style="text-align: center;">
-        <span class="badge">✨ شیراز جنریٹ ساؤنڈ - پرو اے آئی اسٹوڈیو</span>
+        <span class="badge">✨ شیراز جنریٹ ساؤنڈ - پرو اسٹوڈیو</span>
     </div>
     <h1>شیرز پرو اے آئی اس튜디오</h1>
-    <div class="subtitle">چیٹ جی پی ٹی کے اردو لیرکس سے اصلی سازوں والا گانا تیار کریں</div>
+    <div class="subtitle">چیٹ جی پی ٹی کے اردو گانوں کو ترنم اور لے کے ساتھ پڑھنے والا اسٹوڈیو</div>
 
     <label for="chatGptLyrics">📝 چیٹ جی پی ٹی سے کاپی کیا ہوا اردو گانا یہاں پیسٹ کریں:</label>
     <textarea id="chatGptLyrics" rows="4" placeholder="یہاں اپنا اردو گانا یا شاعری پیسٹ کریں..."></textarea>
 
-    <label for="musicMood">🎵 میوزک اور وائس موڈ (Music Style):</label>
+    <label for="musicMood">🎵 گانے اور ترنم کا انداز (Vocal Mood):</label>
     <select id="musicMood">
-        <option value="poetic">📜 شعر و شاعری کا کلاسیکل ترنم</option>
-        <option value="sad">🌧️ اداس اور دلگیر دھن (Sad Melody)</option>
-        <option value="energetic">🔥 جوشیلہ اور ریتھمک گانا (Energetic Beat)</option>
+        <option value="poetic">📜 کلاسیکل شاعری اور ترنم کا انداز</option>
+        <option value="sad">🌧️ اداس اور دھیما صوفیانہ انداز (Sad & Slow)</option>
+        <option value="energetic">🔥 جوشیلہ اور تال والا انداز (Rhythmic & Fast)</option>
     </select>
 
-    <button onclick="generateSongFromLyrics()">🎶 اصل سازوں اور میوزک کے ساتھ گانا جنریٹ کریں</button>
+    <div class="btn-group">
+        <button class="btn-primary" onclick="startSingingLyrics()">🎶 ترنم کے ساتھ گانا شروع کریں</button>
+        <button class="btn-stop" onclick="stopSingingLyrics()">⏹️ آواز بند کریں</button>
+    </div>
 
     <div class="output-section">
-        <label style="color: #38bdf8;">ترتیب شدہ لیرکس:</label>
-        <div id="resultLyrics" style="color: #cbd5e1; white-space: pre-wrap; font-size: 15px; margin-bottom: 10px;">گانا جنریٹ ہونے کے بعد یہاں لیرکس آئیں گے...</div>
-        
-        <label style="color: #34d399;">🎧 اصلی سازوں والا آڈیو پلیئر (گانا سنیں):</label>
-        <audio id="audioPlayer" controls style="display:none;"></audio>
+        <label style="color: #34d399;">🎧 لیرکس اور ریڈی ٹیشن آؤٹ پٹ:</label>
+        <div id="resultLyrics" class="lyrics-display">چیٹ جی پی ٹی سے گانا لا کر یہاں پیسٹ کریں اور 'ترنم کے ساتھ گانا شروع کریں' کا بٹن دبائیں...</div>
     </div>
 </div>
 
 <script>
-    async function generateSongFromLyrics() {
+    let currentUtterances = [];
+
+    function startSingingLyrics() {
         let lyrics = document.getElementById("chatGptLyrics").value.trim();
         let mood = document.getElementById("musicMood").value;
-        let resultLyrics = document.getElementById("resultLyrics");
-        let audioPlayer = document.getElementById("audioPlayer");
+        let resultDiv = document.getElementById("resultLyrics");
 
         if (lyrics === "") {
             alert("براہ کرم پہلے چیٹ جی پی ٹی سے کاپی کیا ہوا گانا یہاں پیسٹ کریں!");
             return;
         }
 
-        resultLyrics.innerText = "اے آئی اسٹوڈیو آپ کے اردو لیرکس پر دھن اور ساز تیار کر رہا ہے، براہ کرم انتظار کریں...";
+        // سکرین پر لیرکس دکھائیں
+        resultDiv.innerText = lyrics;
 
-        try {
-            let response = await fetch('/api/generate-pro-music', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ lyrics: lyrics, mood: mood })
-            });
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // پرانی آواز روکیں
 
-            let data = await response.json();
-            if (data.success) {
-                resultLyrics.innerText = data.lyrics;
-                audioPlayer.src = data.audio_url;
-                audioPlayer.style.display = "block";
-                audioPlayer.play();
-            } else {
-                alert("جنریشن میں خرابی پیش آئی۔");
+            let lines = lyrics.split('\n');
+            let index = 0;
+
+            function playNextLine() {
+                if (index < lines.length) {
+                    let line = lines[index].trim();
+                    if (line === "") {
+                        index++;
+                        playNextLine();
+                        return;
+                    }
+
+                    let utterance = new SpeechSynthesisUtterance(line);
+                    utterance.lang = 'ur-PK'; // اردو زبان کا تلفظ
+
+                    // موڈ کے حساب سے رفتار اور آواز کی موٹائی (Pitch & Rate)
+                    if (mood === "sad") {
+                        utterance.rate = 0.75; // دھیما اور اداس
+                        utterance.pitch = 0.8;
+                    } else if (mood === "energetic") {
+                        utterance.rate = 1.1; // تیز اور جوشیلا
+                        utterance.pitch = 1.25;
+                    } else {
+                        utterance.rate = 0.85; // ترنم والا کلاسیکل انداز
+                        utterance.pitch = 1.15;
+                    }
+
+                    utterance.onend = function() {
+                        index++;
+                        setTimeout(playNextLine, 350); // مصرعوں کے درمیان خوبصورت میوزیکل پاز (Pause)
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                }
             }
-        } catch (error) {
-            console.error(error);
-            alert("سرور سے رابطہ قائم نہیں ہو سکا۔");
+
+            playNextLine();
+        } else {
+            alert("معذرت، آپ کا براؤزر اسپیچ سنتھیسز کو سپورٹ نہیں کرتا۔");
+        }
+    }
+
+    function stopSingingLyrics() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            alert("گانا روک دیا گیا ہے۔");
         }
     }
 </script>
 
 </body>
 </html>
-
-
 
             
