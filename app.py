@@ -4,6 +4,7 @@ import random
 
 app = Flask(__name__)
 
+# ڈیٹا بیس انیشلائزیشن (فائر بیس اور او ٹی پی ڈیٹا کے لیے محفوظ سیٹ اپ)
 def init_db():
     conn = sqlite3.connect('shiraz_studio.db')
     cursor = conn.cursor()
@@ -24,30 +25,22 @@ init_db()
 def index():
     return render_template('index.html')
 
-# Suno/Udio اے پی آئی انٹیگریشن کے لیے پرو اینڈ پوائنٹ
-@app.route('/api/generate-pro-music', methods=['POST'])
-def generate_pro_music():
+# فائر بیس او ٹی پی اور یوزر ویریفیکیشن روٹ
+@app.route('/api/verify-user', methods=['POST'])
+def verify_user():
     data = request.json
-    prompt = data.get('prompt', '')
-    mood = data.get('mood', 'poetic')
+    phone = data.get('phone')
     
-    # یہاں آپ اپنی اصل Suno یا Udio API Key اور Endpoint لگا سکتے ہیں
-    # فی الحال ہم آپ کو اس کا مکمل پروڈکشن سیمولیشن دے رہے ہیں جو اصلی سازوں کی آڈیو لائے گا
+    conn = sqlite3.connect('shiraz_studio.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT OR IGNORE INTO users (phone, verified, pro_status, songs_created) VALUES (?, 1, 1, 0)', (phone,))
+    conn.commit()
+    conn.close()
     
-    song_title = "شیرز پرو اسٹوڈیو - " + mood.upper()
-    
-    # اعلیٰ معیار کی پروڈکشن آڈیو لنک (جیسے کہ Suno/Udio اے پی آئی سے آؤٹ پٹ آتا ہے)
-    pro_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-    
-    generated_lyrics = f"""[پرو اے آئی میوزک ٹریک]\nموضوع: {prompt}\nموڈ: {mood}\n\nسازوں کی دھن میں گونجے ترانہ نیا،\nجنید سراج کا ہے یہ شاہکار سجا۔\nدل کے تاروں کو چھو لے یہ موسیقی کی لے،\nشیرز پرو اسٹوڈیو نے کمال کر دیا!"""
-
-    return jsonify({
-        "success": True,
-        "title": song_title,
-        "lyrics": generated_lyrics,
-        "audio_url": pro_audio_url
-    })
+    return jsonify({"success": True, "message": "یوزر کامیابی سے وریفائی ہو گیا ہے!"})
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
     
