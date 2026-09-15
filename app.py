@@ -24,18 +24,27 @@ init_db()
 def index():
     return render_template('index.html')
 
-@app.route('/api/send-otp', methods=['POST'])
-def api_send_otp():
+# اے آئی میوزک اور لیرکس جنریشن کے لیے پرو اینڈ پوائنٹ
+@app.route('/api/generate-pro-music', methods=['POST'])
+def generate_pro_music():
     data = request.json
-    phone = data.get('phone')
-    otp = str(random.randint(1000, 9999))
-    conn = sqlite3.connect('shiraz_studio.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT OR REPLACE INTO users (phone, verified, pro_status) VALUES (?, 0, 0)', (phone,))
-    conn.commit()
-    conn.close()
-    return jsonify({"success": True, "otp": otp})
+    prompt = data.get('prompt', '')
+    mood = data.get('mood', 'poetic')
+    
+    # یہاں ہم اے آئی میوزک جنریشن کی پروسیسنگ سیمولیٹ کر رہے ہیں
+    # اصل پروڈکشن میں یہاں Suno یا Udio API کی ریکوئسٹ لگتی ہے
+    
+    song_title = "شیرز پرو اسٹوڈیو ٹریک - " + mood.upper()
+    simulated_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" # اصلی سازوں والی آڈیو ڈیمو لنک
+    
+    generated_lyrics = f"""(موضوع: {prompt} - موڈ: {mood})\n\nسازوں کی گونج میں ہے نیا ترانہ آج،\nجنید سراج کا ہے یہ شاہکار سجا آج۔\nدل کے تاروں کو چھوتی ہے یہ پیاری دھن،\nشیرز پرو اسٹوڈیو کا ہے یہ نیا پن!"""
+
+    return jsonify({
+        "success": True,
+        "title": song_title,
+        "lyrics": generated_lyrics,
+        "audio_url": simulated_audio_url
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
