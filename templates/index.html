@@ -100,27 +100,50 @@
             line-height: 1.6;
             margin-bottom: 15px;
         }
+        .auth-section {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px dashed #64748b;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
     </style>
+
+    <!-- فائر بیس (Firebase SDK) کی لائبریریاں -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
 <div class="studio-card">
     <div style="text-align: center;">
-        <span class="badge">✨ جنید سراج & جنید ساؤنڈ - پرو اس튜디오</span>
+        <span class="badge">✨ شیراز جنریٹ ساؤنڈ - پرو اسٹوڈیو</span>
     </div>
     <h1>شیرز پرو اے آئی اس튜디오</h1>
-    <div class="subtitle">محفوظ فائر بیس اور ترنم کے ساتھ لیریکل اسپیچ انجن</div>
+    <div class="subtitle">فائر بیس او ٹی پی اور ترنم کے ساتھ لیریکل اسپیچ انجن</div>
 
-    <label for="phoneInput">فائر بیس فون نمبر (او ٹی پی تصدیق):</label>
-    <div class="btn-group" style="margin-bottom: 15px;">
-        <input type="text" id="phoneInput" placeholder="+923XXXXXXXXX" style="margin-bottom:0;">
-        <button class="btn-primary" onclick="verifyFirebaseUser()" style="flex: 0.5;">تصدیق کریں</button>
+    <!-- فائر بیس فون او ٹی پی سیکشن -->
+    <div class="auth-section">
+        <label for="phoneInput">📱 فائر بیس فون نمبر (ساتھ کنٹری کوڈ لکھیں مثلاً +92):</label>
+        <div class="btn-group" style="margin-bottom: 10px;">
+            <input type="text" id="phoneInput" placeholder="+923XXXXXXXXX" style="margin-bottom:0;">
+            <button class="btn-primary" onclick="sendOtpCode()" style="flex: 0.6;">او ٹی پی بھیجیں</button>
+        </div>
+
+        <div id="otpBox" style="display:none; margin-top: 10px;">
+            <label for="otpInput">🔑 ایس ایم ایس میں موصول ہونے والا کوڈ (OTP):</label>
+            <div class="btn-group" style="margin-bottom: 0;">
+                <input type="text" id="otpInput" placeholder="6 ہندسوں کا کوڈ لکھیں" style="margin-bottom:0;">
+                <button class="btn-success" onclick="verifyOtpCode()" style="flex: 0.6;">تصدیق کریں</button>
+            </div>
+        </div>
+        <div id="recaptcha-container"></div>
     </div>
 
-    <label for="lyricsInput">لیرکس یا شاعری درج کریں:</label>
+    <label for="lyricsInput">🎵 لیرکس یا شاعری درج کریں:</label>
     <textarea id="lyricsInput" rows="3" placeholder="یہاں اپنا گانا یا شاعری لکھیں..."></textarea>
 
-    <label for="moodSelect">وائس موڈ اور انداز:</label>
+    <label for="moodSelect">🎨 وائس موڈ اور انداز:</label>
     <select id="moodSelect">
         <option value="poetic">📜 شعر و شاعری کا کلاسیکل ترنم</option>
         <option value="sad">🌧️ اداس اور دھیما انداز (Sad & Slow)</option>
@@ -133,35 +156,69 @@
         <button class="btn-secondary" onclick="downloadText()">📥 ڈاؤن لوڈ</button>
     </div>
 
-    <label>اسٹوڈیو آؤٹ پٹ:</label>
+    <label>🎧 اسٹوڈیو آؤٹ پٹ:</label>
     <div id="studioOutput" class="output-box">جنید سراج اسٹوڈیو تیار ہے...</div>
 </div>
 
 <script>
-    // فائر بیس یوزر وریفیکیشن سیمولیشن
-    async function verifyFirebaseUser() {
-        let phone = document.getElementById("phoneInput").value.trim();
-        if(phone === "") {
-            alert("براہ کرم فون نمبر درج کریں!");
+    // فائر بیس کنفیگریشن (یہاں آپ اپنی فائر بیس پروجیکٹ کی تفصیلات درج کریں گے)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDummyKey-ReplaceWithYourFirebaseKey",
+        authDomain: "shiraz-pro-studio.firebaseapp.com",
+        projectId: "shiraz-pro-studio",
+        storageBucket: "shiraz-pro-studio.appspot.com",
+        messagingSenderId: "1234567890",
+        appId: "1:1234567890:web:abcdef"
+    };
+
+    // فائر بیس انیشلائزیشن
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
+    // ری کیپچا اور او ٹی پی ویری ایبل
+    window.onload = function() {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible'
+        });
+    };
+
+    function sendOtpCode() {
+        let phoneNumber = document.getElementById("phoneInput").value.trim();
+        if (phoneNumber === "") {
+            alert("براہ کرم درست فون نمبر درج کریں!");
             return;
         }
 
-        try {
-            let response = await fetch('/api/verify-user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: phone })
+        let appVerifier = window.recaptchaVerifier;
+        firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+            .then(function (confirmationResult) {
+                window.confirmationResult = confirmationResult;
+                document.getElementById("otpBox").style.display = "block";
+                alert("او ٹی پی (OTP) کوڈ آپ کے موبائل نمبر پر بھیج دیا گیا ہے!");
+            }).catch(function (error) {
+                console.error(error);
+                alert("او ٹی پی بھیجنے میں خرابی: " + error.message);
             });
-            let data = await response.json();
-            if(data.success) {
-                alert("مبارک ہو! فون نمبر فائر بیس پر کامیابی سے وریفائی ہو گیا ہے۔");
-            }
-        } catch(e) {
-            alert("کنکشن میں خرابی!");
-        }
     }
 
-    // ترنم اور سر کے ساتھ بولنے والا طاقتور اسپیچ انجن (لیریکل ریڈی ٹیشن)
+    function verifyOtpCode() {
+        let code = document.getElementById("otpInput").value.trim();
+        if (code === "") {
+            alert("براہ کرم موصول ہونے والا او ٹی پی کوڈ درج کریں!");
+            return;
+        }
+
+        window.confirmationResult.confirm(code).then(function (result) {
+            let user = result.user;
+            alert("مبارک ہو! فون نمبر فائر بیس پر کامیابی سے وریفائی اور لاگ ان ہو گیا ہے!");
+            document.getElementById("otpBox").style.display = "none";
+        }).catch(function (error) {
+            alert("کوڈ درست نہیں ہے یا منسوخ ہو گیا ہے۔");
+        });
+    }
+
+    // لیریکل اسپیچ انجن (ترنم والا ریڈی ٹیشن)
     function playLyricalRecitation() {
         let text = document.getElementById("lyricsInput").value.trim();
         let mood = document.getElementById("moodSelect").value;
@@ -175,7 +232,7 @@
         outputBox.innerText = text;
 
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // پرانی آواز بند کریں
+            window.speechSynthesis.cancel();
 
             let lines = text.split('\n');
             let index = 0;
@@ -192,7 +249,6 @@
                     let utterance = new SpeechSynthesisUtterance(line);
                     utterance.lang = 'ur-PK';
 
-                    // موڈ کے مطابق رفتار اور پچ (Rate & Pitch)
                     if (mood === "sad") {
                         utterance.rate = 0.8;
                         utterance.pitch = 0.9;
@@ -201,12 +257,12 @@
                         utterance.pitch = 1.3;
                     } else {
                         utterance.rate = 0.9;
-                        utterance.pitch = 1.2; // ترنم والا انداز
+                        utterance.pitch = 1.2;
                     }
 
                     utterance.onend = function() {
                         index++;
-                        setTimeout(speakLine, 400); // مصرعوں کے درمیان خوبصورت وقفہ
+                        setTimeout(speakLine, 400);
                     };
 
                     window.speechSynthesis.speak(utterance);
@@ -238,5 +294,6 @@
 
 </body>
 </html>
+
 
             
