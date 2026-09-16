@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیرز پرو اے آئی اس튜디오 - لیریکل سنگنگ انجن</title>
+    <title>شیرز پرو اے آئی اس튜디오 - لیریکل اسپیچ اسٹوڈیو</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -103,12 +103,6 @@
             background: rgba(15, 23, 42, 0.6);
             border-radius: 8px;
         }
-        .highlight {
-            background: #4f46e5;
-            color: #ffffff;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body>
@@ -142,8 +136,6 @@
 </div>
 
 <script>
-    let currentUtterances = [];
-
     function startSingingLyrics() {
         let lyrics = document.getElementById("chatGptLyrics").value.trim();
         let mood = document.getElementById("musicMood").value;
@@ -173,23 +165,23 @@
                     }
 
                     let utterance = new SpeechSynthesisUtterance(line);
-                    utterance.lang = 'ur-PK'; // اردو زبان کا تلفظ
+                    utterance.lang = 'ur-PK'; // اردو تلفظ
 
-                    // موڈ کے حساب سے رفتار اور آواز کی موٹائی (Pitch & Rate)
+                    // موڈ کے حساب سے رفتار اور آواز (Pitch & Rate)
                     if (mood === "sad") {
-                        utterance.rate = 0.75; // دھیما اور اداس
+                        utterance.rate = 0.75;
                         utterance.pitch = 0.8;
                     } else if (mood === "energetic") {
-                        utterance.rate = 1.1; // تیز اور جوشیلا
+                        utterance.rate = 1.1;
                         utterance.pitch = 1.25;
                     } else {
-                        utterance.rate = 0.85; // ترنم والا کلاسیکل انداز
+                        utterance.rate = 0.85;
                         utterance.pitch = 1.15;
                     }
 
                     utterance.onend = function() {
                         index++;
-                        setTimeout(playNextLine, 350); // مصرعوں کے درمیان خوبصورت میوزیکل پاز (Pause)
+                        setTimeout(playNextLine, 350); // مصرعوں کے درمیان وقفہ
                     };
 
                     window.speechSynthesis.speak(utterance);
@@ -212,5 +204,3 @@
 
 </body>
 </html>
-
-            
