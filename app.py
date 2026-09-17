@@ -15,14 +15,15 @@ def generate_song():
         voice_style = data.get('voice_style', 'male')
 
         if not lyrics:
-            return jsonify({"success": False, "error": "لیرکس خالی ہیں!"}), 400
+            return jsonify({"success": False, "error": "لیرکس خالی ہیں! براہ کرم بول درج کریں۔"}), 400
 
-        # یہاں پائথন کا انجن لیرکس اور وائس اسٹائل کو پروسیس کرتا ہے
-        print(f"[سسٹم] موصول ہونے والے بول: {lyrics}")
-        print(f"[سسٹم] منتخب کردہ انداز: {voice_style}")
+        # یہاں لیرکس اور وائس اسٹائل کامیابی سے ریسیو ہو رہے ہیں
+        print(f"[جنریشن انجن] موصولہ بول: {lyrics}")
+        print(f"[جنریشن انجن] منتخب کردہ انداز: {voice_style}")
 
-        # یہ وہ فائنل آڈیو آؤٹ پٹ ہے جو جنریٹ ہو کر فرنٹ اینڈ پر جائے گا
-        output_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        # جب آپ اس میں اصلی اے آئی جنریشن پائپ لائن یا API پلگ ان کریں گے، 
+        # تو تیار شدہ آڈیو کا لنک یہاں سے ریٹرن ہوگا۔
+        output_audio_url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
 
         return jsonify({
             "success": True,
@@ -34,5 +35,6 @@ def generate_song():
         return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
     
