@@ -16,7 +16,7 @@ def generate_music():
         data = request.get_json()
         prompt = data.get('prompt', 'A beautiful song in Urdu with rhythm and music')
 
-        # Fal.ai ka stable-audio model call karna
+        # yahan hum 'subscribe' use kar rahe hain jo websocket ke zariye connection zinda rakhta hai aur timeout nahi hone deta
         handler = fal_client.submit(
             "fal-ai/stable-audio",
             arguments={
@@ -45,5 +45,4 @@ def generate_music():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
     
