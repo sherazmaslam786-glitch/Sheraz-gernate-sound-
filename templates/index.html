@@ -3,131 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شیرز پرو اسٹوڈیو - اے آئی گانا جنریٹر</title>
+    <title>اے آئی گانا جنریٹر</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0D0712;
-            color: #E8FAFC;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .studio-container {
-            background: #111827;
-            border: 2px solid #855F7;
-            border-radius: 16px;
-            padding: 25px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-        h2 { text-align: center; color: #C8D4FC; margin-top: 0; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #CBD5E1; }
-        textarea, select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #7E27CE;
-            background: #1F2937;
-            color: white;
-            font-size: 15px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            background: linear-gradient(45deg, #9333EA, #DB2777);
-            transition: 0.3s;
-        }
-        .btn:hover { opacity: 0.9; }
-        .player-box {
-            margin-top: 20px;
-            background: #1F2937;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px dashed #855F7;
-        }
-        audio { width: 100%; margin-top: 10px; }
-        #statusText { margin-top: 10px; color: #E8D88D; font-weight: bold; }
+        body { font-family: Tahoma, sans-serif; background-color: #f4f7f6; text-align: center; padding: 50px; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 500px; }
+        textarea { width: 90%; height: 100px; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; }
+        button { background-color: #28a745; color: white; border: none; padding: 12px 20px; font-size: 18px; border-radius: 5px; cursor: pointer; width: 95%; }
+        button:hover { background-color: #218838; }
+        #loading { display: none; margin-top: 15px; color: #007bff; font-weight: bold; }
+        audio { margin-top: 20px; width: 95%; }
     </style>
 </head>
 <body>
 
-    <div class="studio-container">
-        <h2>شیرز پرو اسٹوڈیو - اے آئی گانا جنریٹر</h2>
+<div class="container">
+    <h2>اے آئی گانا تیار کرنے والا سسٹم</h2>
+    <textarea id="promptInput" placeholder="اپنے گانے کے بول یا خیالات یہاں لکھیں..."></textarea>
+    <br>
+    <button onclick="generateMusic()">اصلی گانا تیار کریں اور بجائیں</button>
+    
+    <div id="loading">گانا تیار ہو رہا ہے، براہ کرم انتظار کریں... (اس میں کچھ وقت لگ سکتا ہے)</div>
+    
+    <br>
+    <audio id="audioPlayer" controls style="display:none;"></audio>
+</div>
 
-        <label>اردو یا فارسی گانے کے بول درج کریں: 📝</label>
-        <textarea id="userLyrics" rows="4" placeholder="یہاں اپنا شعر یا گانا کا بول لکھیں..."></textarea>
+<script>
+async function generateMusic() {
+    const prompt = document.getElementById('promptInput').value;
+    const loadingDiv = document.getElementById('loading');
+    const audioPlayer = document.getElementById('audioPlayer');
 
-        <label>گائیکی کا انداز اور آواز (مرد/عورت): 🎵</label>
-        <select id="voiceStyle">
-            <option value="male_melodic">مردانہ آواز - صوفیانہ ترنم</option>
-            <option value="female_high">خواتین آواز - اونچا سر</option>
-            <option value="fast_beat">حویلی کل اور سورج کا ساز</option>
-        </select>
+    if (!prompt.trim()) {
+        alert("براہ کرم کچھ بول یا پرامپٹ لکھیں!");
+        return;
+    }
 
-        <button class="btn" onclick="generateAndPlaySong()">اصلی گانا تیار کریں اور بجائیں</button>
+    loadingDiv.style.display = 'block';
+    audioPlayer.style.display = 'none';
 
-        <div class="player-box">
-            <div id="statusText" style="color: #84a1b8;">اسٹوڈیو تیار ہے، لیرکس درج کریں اور گانا بنائیں۔</div>
-            <audio id="songPlayer" controls style="display: none;"></audio>
-        </div>
-    </div>
+    try {
+        const response = await fetch('/generate-music', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: prompt })
+        });
 
-    <script>
-        async function generateAndPlaySong() {
-            let lyrics = document.getElementById('userLyrics').value.trim();
-            let style = document.getElementById('voiceStyle').value;
-            let statusText = document.getElementById('statusText');
-            let player = document.getElementById('songPlayer');
+        const data = await response.json();
+        loadingDiv.style.display = 'none';
 
-            if (!lyrics) {
-                alert("براہ کرم پہلے کچھ بول (Lyrics) درج کریں۔");
-                return;
-            }
-
-            statusText.innerText = "اے آئی گانا تیار کر رہا ہے، براہ کرم انتظار کریں...";
-            player.style.display = "none";
-
-            try {
-                let response = await fetch('/generate-music', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ prompt: lyrics + " in style of " + style })
-                });
-
-                let data = await response.json();
-
-                if (data.status === "success" && data.audio_url) {
-                    statusText.innerText = "گانا کامیابی سے تیار ہو گیا ہے!";
-                    player.src = data.audio_url;
-                    player.style.display = "block";
-                    player.play();
-                } else {
-                    statusText.innerText = "خرابی: " + (data.message || "آڈیو حاصل نہیں ہو سکی۔");
-                }
-            } catch (error) {
-                statusText.innerText = "سرور سے رابطہ نہیں ہو سکا۔";
-                console.error(error);
-            }
+        if (data.status === 'success' && data.audio_url) {
+            audioPlayer.src = data.audio_url;
+            audioPlayer.style.display = 'block';
+            audioPlayer.play();
+        } else {
+            alert("خرابی: " + (data.message || "گانا نہیں بن سکا۔"));
         }
-    </script>
+    } catch (error) {
+        loadingDiv.style.display = 'none';
+        alert("سرور سے رابطہ نہیں ہو سکا یا ٹائم آؤٹ ہو گیا۔");
+        console.error(error);
+    }
+}
+</script>
 
 </body>
 </html>
 
-        
+            
