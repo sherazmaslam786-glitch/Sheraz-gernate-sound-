@@ -4,7 +4,6 @@ import fal_client
 
 app = Flask(__name__)
 
-# Render environment se FAL_KEY khud ba khud uth jaye gi
 os.environ["FAL_KEY"] = os.environ.get("FAL_KEY", "d0edeae9-ebe8-48c8-ab59-0ad9a68b37ce:a51c38afb9b33450c7558f3eb79459e4")
 
 @app.route('/')
@@ -22,12 +21,18 @@ def generate_music():
             "fal-ai/stable-audio",
             arguments={
                 "prompt": prompt,
-                "seconds_total": 30
+                "seconds_total": 15
             }
         )
         
         result = handler.get()
-        audio_url = result.get("audio_file", {}).get("url") if isinstance(result, dict) else None
+        
+        audio_url = None
+        if isinstance(result, dict):
+            if "audio_file" in result:
+                audio_url = result["audio_file"].get("url")
+            elif "audio" in result:
+                audio_url = result["audio"].get("url")
 
         if audio_url:
             return jsonify({"status": "success", "audio_url": audio_url})
