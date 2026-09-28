@@ -3,26 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اے آئی گانا جنریٹر</title>
+    <title>شیرز پرو اسٹوڈیو - اے آئی گانا جنریٹر</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background-color: #f4f7f6; text-align: center; padding: 50px; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 500px; }
-        textarea { width: 90%; height: 100px; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; }
-        button { background-color: #28a745; color: white; border: none; padding: 12px 20px; font-size: 18px; border-radius: 5px; cursor: pointer; width: 95%; }
-        button:hover { background-color: #218838; }
-        #loading { display: none; margin-top: 15px; color: #007bff; font-weight: bold; }
+        body { font-family: Tahoma, sans-serif; background-color: #0f172a; color: #f8fafc; text-align: center; padding: 30px; }
+        .container { background: #1e293b; padding: 30px; border-radius: 15px; box-shadow: 0px 4px 20px rgba(0,0,0,0.5); display: inline-block; width: 100%; max-width: 500px; border: 1px solid #334155; }
+        h2 { color: #38bdf8; margin-bottom: 20px; }
+        textarea { width: 90%; height: 110px; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 16px; resize: none; }
+        button { background: linear-gradient(135deg, #3b82f6, #ec4899); color: white; border: none; padding: 14px 20px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 95%; transition: 0.3s; }
+        button:hover { opacity: 0.9; }
+        #loading { display: none; margin-top: 15px; color: #fbbf24; font-weight: bold; font-size: 16px; }
         audio { margin-top: 20px; width: 95%; }
+        #errorBox { display: none; margin-top: 15px; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 6px; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>اے آئی گانا تیار کرنے والا سسٹم</h2>
-    <textarea id="promptInput" placeholder="اپنے گانے کے بول یا خیالات یہاں لکھیں..."></textarea>
+    <h2>شیرز پرو اسٹوڈیو</h2>
+    <p style="font-size: 14px; color: #94a3b8;">اردو یا فارسی گانے کے بول درج کریں:</p>
+    
+    <textarea id="promptInput" placeholder="دل کی آواز... راتوں میں جب چاند نکلتا ہے..."></textarea>
     <br>
     <button onclick="generateMusic()">اصلی گانا تیار کریں اور بجائیں</button>
     
-    <div id="loading">گانا تیار ہو رہا ہے، براہ کرم انتظار کریں... (اس میں کچھ وقت لگ سکتا ہے)</div>
+    <div id="loading">🎵 اے آئی گانا تیار کر رہا ہے، براہ کرم انتظار کریں...</div>
+    <div id="errorBox"></div>
     
     <br>
     <audio id="audioPlayer" controls style="display:none;"></audio>
@@ -32,6 +37,7 @@
 async function generateMusic() {
     const prompt = document.getElementById('promptInput').value;
     const loadingDiv = document.getElementById('loading');
+    const errorBox = document.getElementById('errorBox');
     const audioPlayer = document.getElementById('audioPlayer');
 
     if (!prompt.trim()) {
@@ -40,6 +46,7 @@ async function generateMusic() {
     }
 
     loadingDiv.style.display = 'block';
+    errorBox.style.display = 'none';
     audioPlayer.style.display = 'none';
 
     try {
@@ -59,11 +66,13 @@ async function generateMusic() {
             audioPlayer.style.display = 'block';
             audioPlayer.play();
         } else {
-            alert("خرابی: " + (data.message || "گانا نہیں بن سکا۔"));
+            errorBox.style.display = 'block';
+            errorBox.innerText = "خرابی: " + (data.message || "گانا نہیں بن سکا۔");
         }
     } catch (error) {
         loadingDiv.style.display = 'none';
-        alert("سرور سے رابطہ نہیں ہو سکا یا ٹائم آؤٹ ہو گیا۔");
+        errorBox.style.display = 'block';
+        errorBox.innerText = "سرور سے رابطہ نہیں ہو سکا یا ٹائم آؤٹ ہو گیا۔";
         console.error(error);
     }
 }
@@ -71,5 +80,3 @@ async function generateMusic() {
 
 </body>
 </html>
-
-            
