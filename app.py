@@ -1,11 +1,11 @@
- import os
-import requests
+import os
 from flask import Flask, render_template, request, jsonify
+import fal_client
 
 app = Flask(__name__)
 
-# Aap ki Fal.ai API Key yahan set ki gayi hai
-FAL_KEY = os.environ.get("FAL_KEY", "d0edeae9-ebe8-48c8-ab59-0ad9a68b37ce:a51c38afb9b33450c7558f3eb79459e4")
+# یہاں آپ کی Fal.ai API Key سیٹ کی گئی ہے
+os.environ["FAL_KEY"] = os.environ.get("FAL_KEY", "d0edeae9-ebe8-48c8-ab59-0ad9a68b37ce:a51c38afb9b33450c7558f3eb79459e4")
 
 @app.route('/')
 def index():
@@ -15,36 +15,30 @@ def index():
 def generate_music():
     try:
         data = request.get_json()
-        prompt = data.get('prompt', 'A beautiful song in Urdu with rhythm and music')
+        prompt = data.get('prompt', 'اردو میں تال اور موسیقی کے ساتھ ایک خوبصورت گانا')
 
-        # Direct Fal.ai REST API endpoint call
-        url = "https://fal.run/fal-ai/stable-audio"
-        headers = {
-            "Authorization": f"Key {FAL_KEY}",
-            "Content-Type": "application/json"
-        }
-        payload = {
-            "prompt": prompt,
-            "seconds_total": 15
-        }
-
-        response = requests.post(url, headers=headers, json=payload, timeout=60)
+        # Fal.ai API کو سبمٹ کرنے کا طریقہ
+        handler = fal_client.submit(
+            "fal-ai/stable-audio",
+            arguments={
+                "prompt": prompt,
+                "seconds_total": 15
+            }
+        )
         
-        if response.status_code == 200:
-            result = response.json()
-            audio_url = None
-            if isinstance(result, dict):
-                if "audio_file" in result:
-                    audio_url = result["audio_file"].get("url")
-                elif "audio" in result:
-                    audio_url = result["audio"].get("url")
+        result = handler.get()
+        
+        audio_url = None
+        if isinstance(result, dict):
+            if "audio_file" in result:
+                audio_url = result["audio_file"].get("url")
+            elif "audio" in result:
+                audio_url = result["audio"].get("url")
 
-            if audio_url:
-                return jsonify({"status": "success", "audio_url": audio_url})
-            else:
-                return jsonify({"status": "error", "message": "اے آئی نے آڈیو لنک نہیں دیا۔"}), 500
+        if audio_url:
+            return jsonify({"status": "success", "audio_url": audio_url})
         else:
-            return jsonify({"status": "error", "message": f"Fal.ai Error: {response.text}"}), 500
+            return jsonify({"status": "error", "message": "مصنوعی ذہانت (AI) سے آڈیو کا لنک حاصل نہیں ہو سکاہے۔"}), 500
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -52,5 +46,4 @@ def generate_music():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    
-
+ 
