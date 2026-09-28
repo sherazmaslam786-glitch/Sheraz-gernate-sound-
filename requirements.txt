@@ -1,4 +1,5 @@
-Flask
-fal-client
-gunicorn
+flask
+requests
+gradio_client
+
 
