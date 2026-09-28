@@ -1,49 +1,33 @@
+from flask import Flask, request, jsonify
+from gradio_client import Client
 import os
-from flask import Flask, render_template, request, jsonify
-import fal_client
 
 app = Flask(__name__)
 
-# یہاں آپ کی Fal.ai API Key سیٹ کی گئی ہے
-os.environ["FAL_KEY"] = os.environ.get("FAL_KEY", "d0edeae9-ebe8-48c8-ab59-0ad9a68b37ce:a51c38afb9b33450c7558f3eb79459e4")
-
-@app.route('/')
-def index():
-    return render_template('index.html')
+# آپ کا گوگل کولاب والا مفت پبلک لنک یہاں سیٹ کر دیا گیا है
+COLAB_GRADIO_URL = "https://fa4ca99a34de575b22.gradio.live"
 
 @app.route('/generate-music', methods=['POST'])
 def generate_music():
+    data = request.get_json()
+    prompt = data.get('prompt', 'upbeat electronic dance track')
+    
     try:
-        data = request.get_json()
-        prompt = data.get('prompt', 'اردو میں تال اور موسیقی کے ساتھ ایک خوبصورت گانا')
-
-        # Fal.ai API کو سبمٹ کرنے کا طریقہ
-        handler = fal_client.submit(
-            "fal-ai/stable-audio",
-            arguments={
-                "prompt": prompt,
-                "seconds_total": 15
-            }
+        # گوگل کولاب والے مفت سرور سے رابطہ کریں
+        client = Client(COLAB_GRADIO_URL)
+        
+        # اے آئی ماڈل کو پرامپٹ بھیج کر گانا تیار کروائیں
+        result = client.predict(
+            prompt_text=prompt,
+            api_name="/predict"
         )
         
-        result = handler.get()
+        # تیار شدہ آڈیو/گانے کی فائل کا لنک یا پاتھ واپس بھیجیں
+        return jsonify({"success": True, "audio_url": result})
         
-        audio_url = None
-        if isinstance(result, dict):
-            if "audio_file" in result:
-                audio_url = result["audio_file"].get("url")
-            elif "audio" in result:
-                audio_url = result["audio"].get("url")
-
-        if audio_url:
-            return jsonify({"status": "success", "audio_url": audio_url})
-        else:
-            return jsonify({"status": "error", "message": "مصنوعی ذہانت (AI) سے آڈیو کا لنک حاصل نہیں ہو سکاہے۔"}), 500
-
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({"success": False, "error": str(e)})
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
- 
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    
