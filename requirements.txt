@@ -1,5 +1,7 @@
 flask
 requests
-gradio_client
+gradio-client
+gunicorn
+
 
 
